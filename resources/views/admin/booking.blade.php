@@ -415,7 +415,7 @@ input::-webkit-inner-spin-button {
 <!-- X-editable js -->
 <script src="{{ asset('assets/plugins/bootstrap-xeditable/js/bootstrap-editable.min.js') }}"></script>
 <!-- Google Maps JS -->
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAaP8ZIrOxt7RLrU4aBD3GI-maM3ITjGp4&language=en&region=CA"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{ Config::get('services.google.key') }}&language=en&region=CA"></script>
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script type="text/javascript">
 var livingroomitems = ['One Seater Sofa','Two Seater Sofa','Coffee Table','Large TV',

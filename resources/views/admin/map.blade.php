@@ -48,14 +48,16 @@ Map
  </div>
  <!-- End col -->
  </div>
+ <div class="">
+   <h5>Key</h5>
+   <p><?php $keyring = Config::get('services.google.key'); ?></p>
+ </div>
 </div>
 <!-- End Contentbar -->
 @endsection
 @section('script')
 <!-- Google Maps JS -->
-<script src="http://maps.google.com/maps/api/js?key=AIzaSyAaP8ZIrOxt7RLrU4aBD3GI-maM3ITjGp4&language=en&region=CA"></script>
-<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaP8ZIrOxt7RLrU4aBD3GI-maM3ITjGp4&language=en&region=CA"
-        async defer></script> -->
+<script src="http://maps.google.com/maps/api/js?key={{ Config::get('services.google.key') }}&language=en&region=CA"></script>
 <script src="{{ asset('assets/plugins/gmaps/gmaps.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom/custom-marker-maps.js') }}"></script>
 @endsection

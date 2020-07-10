@@ -130,7 +130,7 @@ Soyuz - Google Map
 @endsection
 @section('script')
 <!-- Google Maps JS -->
-<script src="http://maps.google.com/maps/api/js?key=AIzaSyAaP8ZIrOxt7RLrU4aBD3GI-maM3ITjGp4"></script>
+<script src="http://maps.google.com/maps/api/js?key={{ Config::get('services.google.key') }}"></script>
 <script src="{{ asset('assets/plugins/gmaps/gmaps.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom/custom-gmaps.js') }}"></script>
 @endsection

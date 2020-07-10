@@ -42,7 +42,7 @@
                             <label for="profile" class="col-md-4 col-form-label text-md-right">{{ __('Profile') }}</label>
 
                             <div class="col-md-6">
-                              <select id="profile" class="form-control">
+                              <select name="profile" id="profile" class="form-control">
                                   <option selected>Select Profile...</option>
                                   <option value="1">Administrator</option>
                                   <option value="2">Sales Manager</option>
