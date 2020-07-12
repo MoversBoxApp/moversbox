@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Profile;
 
@@ -22,7 +23,7 @@ class UsersController extends Controller
     {
       $users = User::all();
       $profiles = Profile::all();
-      return view('admin.users.index', [
+      return view('users.index', [
         'users' => $users,
         'profiles' => $profiles
       ]);
@@ -35,7 +36,10 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+      $profiles = Profile::all();
+      return view('users.create', [
+        'profiles' => $profiles
+      ]);
     }
 
     /**
@@ -46,36 +50,26 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-      $rules = array(
+      $request->validate([
           'name' => ['required', 'string', 'max:255'],
-          'profile_id' => ['required'],
+          // 'profile_id' => ['required'],
           'lastname' => ['required', 'string', 'max:255'],
           'username' => ['required', 'string', 'max:255', 'unique:users'],
           'phone' => ['required', 'string', 'max:255', 'unique:users'],
           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-          'password' => ['string', 'min:8', 'confirmed'],
-      );
-      $validator = Validator::make(Input::all(), $rules);
-      if ($validator->fails()) {
-            return Redirect::to('/admin-users')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
-            // store
-            $user = new User;
-            $user->name       = Input::get('name');
-            $user->lastname       = Input::get('lastname');
-            $user->username       = Input::get('username');
-            $user->phone       = Input::get('phone');
-            $user->email      = Input::get('email');
-            $user->password = Input::get('password');
 
-            $user->save();
-
-            // redirect
-            Session::flash('message', 'Successfully created nerd!');
-            return Redirect::to('nerds');
-        }
+      ]);
+      $user = User::create([
+          'name' => $request['name'],
+          'profile_id' => $request['profile'],
+          'lastname' => $request['lastname'],
+          'username' => $request['username'],
+          'email' => $request['email'],
+          'phone' => $request['phone'],
+          'password' => Hash::make('12345678'),
+      ]);
+      $profile = Profile::where('id', $request['profile'])->first();
+      return redirect('/users');
     }
 
     /**
@@ -86,7 +80,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**

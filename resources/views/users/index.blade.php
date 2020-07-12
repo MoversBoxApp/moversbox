@@ -22,7 +22,8 @@ Admin - Users
         <div class="col-md-4 col-lg-4">
             <div class="widgetbar">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter"><i class="feather icon-plus mr-2"></i>Add User</button>
+                <!-- <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter"><i class="feather icon-plus mr-2"></i>Add User</button> -->
+                <a style="margin: 19px;" href="{{ route('users.create')}}" class="btn btn-primary">Add User</a>
                 <!-- Modal -->
                 <div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -81,7 +82,7 @@ Admin - Users
                                         <div class="form-group col-md-6">
                                             <label for="profile">Profile</label>
                                             <select name="profile" id="profile" class="form-control @error('profile') is-invalid @enderror">
-                                                  <option selected>Select Profile...</option>
+                                                  <option selected value="0" >Select Profile...</option>
                                                 @foreach ($profiles as $profile)
                                                   <option value="{{ $profile->id }}">{{ $profile->name }}</option>
                                                 @endforeach
@@ -188,8 +189,10 @@ Admin - Users
                             <p class="my-2">Send Message</p>
                         </div>
                         <div class="col-6">
+                          <a href="{{ route('users.show',$user)}}">
                             <h4><i class="feather icon-user text-muted"></i></h4>
                             <p class="my-2">View Profile</p>
+                          </a>
                         </div>
                     </div>
                 </div>

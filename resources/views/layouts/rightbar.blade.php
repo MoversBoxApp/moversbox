@@ -6,7 +6,7 @@
                 <div class="mobile-logobar">
                     <a href="{{url('/')}}" class="mobile-logo">
                       <h5 class="menu-title pt-2">Small Moves</h5>
-                      <!-- <img src="assets/images/main-logo.png" class="img-fluid" alt="logo"> -->
+                      <!-- <img src="../assets/images/main-logo.png" class="img-fluid" alt="logo"> -->
                     </a>
                 </div>
                 <div class="mobile-togglebar">
@@ -14,16 +14,16 @@
                         <li class="list-inline-item">
                             <div class="topbar-toggle-icon">
                                 <a class="topbar-toggle-hamburger" href="javascript:void();">
-                                    <img src="assets/images/svg-icon/horizontal.svg" class="img-fluid menu-hamburger-horizontal" alt="horizontal">
-                                    <img src="assets/images/svg-icon/verticle.svg" class="img-fluid menu-hamburger-vertical" alt="verticle">
+                                    <img src="../assets/images/svg-icon/horizontal.svg" class="img-fluid menu-hamburger-horizontal" alt="horizontal">
+                                    <img src="../assets/images/svg-icon/verticle.svg" class="img-fluid menu-hamburger-vertical" alt="verticle">
                                  </a>
                              </div>
                         </li>
                         <li class="list-inline-item">
                             <div class="menubar">
                                 <a class="menu-hamburger" href="javascript:void();">
-                                    <img src="assets/images/svg-icon/menu.svg" class="img-fluid menu-hamburger-collapse" alt="collapse">
-                                    <img src="assets/images/svg-icon/close.svg" class="img-fluid menu-hamburger-close" alt="close">
+                                    <img src="../assets/images/svg-icon/menu.svg" class="img-fluid menu-hamburger-collapse" alt="collapse">
+                                    <img src="../assets/images/svg-icon/close.svg" class="img-fluid menu-hamburger-close" alt="close">
                                  </a>
                              </div>
                         </li>
@@ -43,8 +43,8 @@
                         <li class="list-inline-item">
                             <div class="menubar">
                                 <a class="menu-hamburger" href="javascript:void();">
-                                   <img src="assets/images/svg-icon/menu.svg" class="img-fluid menu-hamburger-collapse" alt="menu">
-                                   <img src="assets/images/svg-icon/close.svg" class="img-fluid menu-hamburger-close" alt="close">
+                                   <img src="../assets/images/svg-icon/menu.svg" class="img-fluid menu-hamburger-collapse" alt="menu">
+                                   <img src="../assets/images/svg-icon/close.svg" class="img-fluid menu-hamburger-close" alt="close">
                                  </a>
                              </div>
                         </li>
@@ -53,7 +53,7 @@
                                 <form>
                                     <div class="input-group">
                                         <div class="input-group-append">
-                                            <button class="btn" type="submit" id="button-addonSearch"><img src="assets/images/svg-icon/search.svg" class="img-fluid" alt="search"></button>
+                                            <button class="btn" type="submit" id="button-addonSearch"><img src="../assets/images/svg-icon/search.svg" class="img-fluid" alt="search"></button>
                                         </div>
                                         <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addonSearch">
                                     </div>
@@ -86,7 +86,7 @@
                         <li class="list-inline-item">
                             <div class="settingbar">
                                 <a href="javascript:void(0)" id="infobar-settings-open" class="infobar-icon">
-                                    <img src="assets/images/svg-icon/settings.svg" class="img-fluid" alt="settings">
+                                    <img src="../assets/images/svg-icon/settings.svg" class="img-fluid" alt="settings">
                                     <span class="live-icon">3</span>
                                 </a>
                             </div>
@@ -94,7 +94,7 @@
                         <li class="list-inline-item">
                             <div class="notifybar">
                                 <div class="dropdown">
-                                    <a class="dropdown-toggle infobar-icon" href="#" role="button" id="notoficationlink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/svg-icon/notifications.svg" class="img-fluid" alt="notifications">
+                                    <a class="dropdown-toggle infobar-icon" href="#" role="button" id="notoficationlink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/svg-icon/notifications.svg" class="img-fluid" alt="notifications">
                                     <span class="live-icon">2</span></a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notoficationlink">
                                         <div class="notification-dropdown-title">
@@ -138,7 +138,7 @@
                             <div class="profilebar">
                                 <div class="dropdown">
                                   <a class="dropdown-toggle" href="#" role="button" id="profilelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="assets/images/users/profile.svg" class="img-fluid" alt="profile">
+                                    <img src="../assets/images/users/profile.svg" class="img-fluid" alt="profile">
                                     <span class="live-icon">{{ Auth::user()->username }}</span>
                                       <span class="feather icon-chevron-down live-icon"></span></a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profilelink">
@@ -150,16 +150,16 @@
                                         <div class="userbox">
                                             <ul class="list-unstyled mb-0">
                                                 <li class="media dropdown-item">
-                                                    <a href="#" class="profile-icon"><img src="assets/images/svg-icon/crm.svg" class="img-fluid" alt="user">My Profile</a>
+                                                    <a href="#" class="profile-icon"><img src="../assets/images/svg-icon/crm.svg" class="img-fluid" alt="user">My Profile</a>
                                                 </li>
                                                 <li class="media dropdown-item">
-                                                    <a href="#" class="profile-icon"><img src="assets/images/svg-icon/email.svg" class="img-fluid" alt="email">Email</a>
+                                                    <a href="#" class="profile-icon"><img src="../assets/images/svg-icon/email.svg" class="img-fluid" alt="email">Email</a>
                                                 </li>
                                                 <li class="media dropdown-item">
                                                         <a class="profile-icon" href="{{ route('logout') }}"
                                                            onclick="event.preventDefault();
                                                                          document.getElementById('logout-form').submit();">
-                                                          <img src="assets/images/svg-icon/logout.svg" class="img-fluid" alt="logout">
+                                                          <img src="../assets/images/svg-icon/logout.svg" class="img-fluid" alt="logout">
                                                             {{ __('Logout') }}
                                                         </a>
 
