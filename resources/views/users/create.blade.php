@@ -4,12 +4,19 @@ Admin - Users
 @extends('layouts.main')
 @section('style')
 <style media="screen">
-  .test{
+  .test
+  {
     width: 90%;
     margin: auto;
     padding: 15px 15px 15px 15px !important;
     /* border-color: #8A98AC; */
     /* background-color: #e9ecf0; */
+  }
+  .alingbottom
+  {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
   }
 </style>
 @endsection
@@ -36,7 +43,7 @@ Admin - Users
 <!-- Start Contentbar -->
 <div class="contentbar">
 <div class="test">
-  <form method="POST" action="{{ route('users.store') }}">
+  <form method="POST" enctype="multipart/form-data" action="{{ route('users.store') }}">
       @csrf
       <div class="form-row">
           <div class="form-group col-md-3">
@@ -59,11 +66,9 @@ Admin - Users
           </div>
           <div class="form-group col-md-3">
               <label for="userpic">Picture</label>
-              <input name="userpic" type="file" class="" id="userpic">
+              <input name="userpic" type="file" class="form-control-file" id="userpic">
                   @error('userpic')
-                      <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
-                      </span>
                   @enderror
           </div>
       </div>
@@ -103,21 +108,20 @@ Admin - Users
               @enderror
           </div>
       </div>
-      <div class="form-row">
-          <div class="form-group col-md-3">
+      <div class="form-row mt-auto">
+          <div class="col-md-3">
               <label for="phone">Phone</label>
-              <input value="1231231234" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="user-phone">
+              <input value="1231231234" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
               @error('phone')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                   </span>
               @enderror
           </div>
-      </div>
-      <div class="form-row">
-      </div>
-      <div class="float-right col-md-3">
-        <button type="submit" class="btn btn-primary"><i class="feather icon-plus mr-2"></i>Add User</button>
+          <div class="col-md-3">
+              <label for=""></label>
+            <button type="submit" class="btn btn-primary alingbottom"><i class="feather icon-plus mr-2"></i>Add User</button>
+          </div>
       </div>
   </div>
   </form>

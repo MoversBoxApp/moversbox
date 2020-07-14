@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Profile;
+use App\UserStatus;
 
 class UsersController extends Controller
 {
@@ -23,9 +24,11 @@ class UsersController extends Controller
     {
       $users = User::all();
       $profiles = Profile::all();
+      $userstatuses = UserStatus::all();
       return view('users.index', [
         'users' => $users,
-        'profiles' => $profiles
+        'profiles' => $profiles,
+        'userstatuses' => $userstatuses
       ]);
     }
 
@@ -37,8 +40,10 @@ class UsersController extends Controller
     public function create()
     {
       $profiles = Profile::all();
+      $userstatuses = UserStatus::all();
       return view('users.create', [
-        'profiles' => $profiles
+        'profiles' => $profiles,
+        'userstatuses' => $userstatuses
       ]);
     }
 
@@ -52,23 +57,29 @@ class UsersController extends Controller
     {
       $request->validate([
           'name' => ['required', 'string', 'max:255'],
-          // 'profile_id' => ['required'],
+          'profile_id' => '',
+          'userstatus_id' => '',
           'lastname' => ['required', 'string', 'max:255'],
           'username' => ['required', 'string', 'max:255', 'unique:users'],
           'phone' => ['required', 'string', 'max:255', 'unique:users'],
           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+          'userpic' => ['required', 'image'],
 
       ]);
+      $imagePath = request('userpic')->store('uploads','public');
       $user = User::create([
           'name' => $request['name'],
           'profile_id' => $request['profile'],
+          'user_status_id' => $request['status'],
           'lastname' => $request['lastname'],
           'username' => $request['username'],
           'email' => $request['email'],
           'phone' => $request['phone'],
           'password' => Hash::make('12345678'),
+          'userpic' => $imagePath,
       ]);
       $profile = Profile::where('id', $request['profile'])->first();
+      $userstatus = UserStatus::where('id', $request['status'])->first();
       return redirect('/users');
     }
 
@@ -91,7 +102,13 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+      $profiles = Profile::all();
+      $userstatuses = UserStatus::all();
+      return view('users.edit', [
+        'user' => $user,
+        'profiles' => $profiles,
+        'userstatuses' => $userstatuses
+      ]);
     }
 
     /**
@@ -103,7 +120,32 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        // dd($request);
+        if (!request('userpic')) {
+          $imagePath = $user->userpic;
+        }else {
+          $imagePath = $request->file('userpic')->store('uploads','public');
+        }
+        if (!request('user_status')) {
+          $userstatus = 2;
+        }else {
+          $userstatus = 1;
+        }
+// dd($userstatus);
+        $user -> update([
+            'name' => $request['name'],
+            'profile_id' => $request['profile'],
+            'user_status_id' => $userstatus,
+            'lastname' => $request['lastname'],
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'password' => $user['password'],
+            'userpic' => $imagePath,
+        ]);
+        // $user->profile()->sync($request->profile);
+        // $user->user_status()->sync($request->user_status);
+        return redirect('/users');
     }
 
     /**
@@ -114,6 +156,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+      $user->delete();
+      return redirect('/users');
     }
 }

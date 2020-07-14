@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use App\Profile;
+use App\UserStatus;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
@@ -24,13 +25,17 @@ class UsersTableSeeder extends Seeder
       $moverProfile = Profile::where('name', 'Mover')->first();
       $clientProfile = Profile::where('name', 'Client')->first();
 
+      $enabledUserStatus = UserStatus::where('name','Enabled')->first();
+      $disabledUserStatus = UserStatus::where('name','Disabled')->first();
+
       $admin = User::create([
         'name' => 'Ragnar',
         'lastname' => 'Lothbrok',
         'username' => 'ragnar',
         'email' => 'ragnar@mail.com',
         'phone' => '601',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $salesmanager = User::create([
         'name' => 'John',
@@ -38,7 +43,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'JohnDoe',
         'phone' => '602',
         'email' => 'john@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $salesagent = User::create([
         'name' => 'Rodney',
@@ -46,7 +52,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'RodneyMacneal',
         'phone' => '603',
         'email' => 'rodney@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $owneroperator = User::create([
         'name' => 'Meghan',
@@ -54,7 +61,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'MeghanAbo',
         'phone' => '604',
         'email' => 'meghan@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $affiliate = User::create([
         'name' => 'Kristie',
@@ -62,7 +70,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'KristieAamdot',
         'phone' => '605',
         'email' => 'kristie@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $mover = User::create([
         'name' => 'Neil',
@@ -70,7 +79,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'NeilAaron',
         'phone' => '606',
         'email' => 'neil@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $client = User::create([
         'name' => 'Naomi',
@@ -78,7 +88,8 @@ class UsersTableSeeder extends Seeder
         'username' => 'NaomiWattson',
         'phone' => '607',
         'email' => 'naomi@mail.com',
-        'password' => Hash::make('12345678')
+        'password' => Hash::make('12345678'),
+        'userpic' => 'uploads/profile.svg'
       ]);
       $adminProfile = $adminProfile->users()->save($admin);
       $salesmanagerProfile = $salesmanagerProfile->users()->save($salesmanager);
@@ -87,6 +98,14 @@ class UsersTableSeeder extends Seeder
       $affiliateProfile = $affiliateProfile->users()->save($affiliate);
       $moverProfile = $moverProfile->users()->save($mover);
       $clientProfile = $clientProfile->users()->save($client);
+
+      $enabledUserStatus = $enabledUserStatus->users()->save($admin);
+      // $enabledUserStatus = $enabledUserStatus->users()->save($salesmanager);
+      // $enabledUserStatus = $enabledUserStatus->users()->save($salesagent);
+      // $enabledUserStatus = $enabledUserStatus->users()->save($owneroperator);
+      // $disabledUserStatus = $disabledUserStatus->users()->save($affiliate);
+      // $enabledUserStatus = $enabledUserStatus->users()->save($mover);
+      // $disabledUserStatus = $disabledUserStatus->users()->save($client);
 
     }
 }

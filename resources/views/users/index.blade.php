@@ -3,7 +3,21 @@ Admin - Users
 @endsection
 @extends('layouts.main')
 @section('style')
-
+<!-- Pnotify css -->
+<link href="{{ asset('assets/plugins/pnotify/css/pnotify.custom.min.css') }}" rel="stylesheet" type="text/css" />
+<style media="screen">
+.circle
+  {
+    height:80px;
+    width:80px;
+    border-radius:50%;
+  }
+  .sw-position
+  {
+    padding-top: 20px !important;
+    width: 80px !important;
+  }
+</style>
 @endsection
 @section('rightbar-content')
 <!-- Start Breadcrumbbar -->
@@ -23,110 +37,25 @@ Admin - Users
             <div class="widgetbar">
                 <!-- Button trigger modal -->
                 <!-- <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter"><i class="feather icon-plus mr-2"></i>Add User</button> -->
-                <a style="margin: 19px;" href="{{ route('users.create')}}" class="btn btn-primary">Add User</a>
+                <a style="margin: 19px;" href="{{ route('users.create')}}" class="btn btn-primary"><i class="feather icon-plus mr-2"></i>Add User</a>
                 <!-- Modal -->
                 <div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Add New User</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" action="{{ route('register') }}">
-                                <!-- <form method="POST" action="#"> -->
-                                    @csrf
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="name">First Name</label>
-                                            <input name="name" type="text"  class="form-control @error('name') is-invalid @enderror" id="name">
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="lastname">Last Name</label>
-                                            <input name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname">
-                                            @error('lastname')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="username">Username</label>
-                                                <input name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username">
-                                                @error('username')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="email">Email</label>
-                                                <input name="email" type="text" class="form-control @error('email') is-invalid @enderror" id="email">
-                                                @error('email')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="profile">Profile</label>
-                                            <select name="profile" id="profile" class="form-control @error('profile') is-invalid @enderror">
-                                                  <option selected value="0" >Select Profile...</option>
-                                                @foreach ($profiles as $profile)
-                                                  <option value="{{ $profile->id }}">{{ $profile->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('profile')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="phone">Phone</label>
-                                            <input name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
-                                            @error('phone')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="userpic">Picture</label>
-                                            <input name="userpic" type="file" class="form-control @error('userpic') is-invalid @enderror" id="userpic">
-                                            @error('userpic')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary"><i class="feather icon-plus mr-2"></i>Add User</button>
-                            </div>
-                          </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalCenterTitle">Add New User</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 <!-- End Breadcrumbbar -->
 <!-- Start Contentbar -->
@@ -151,21 +80,19 @@ Admin - Users
                     </div>
                     <div class="card-body">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="all">
+                            <input checked type="checkbox" class="custom-control-input" id="all">
                             <label class="custom-control-label" for="all">All</label>
                         </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="active" checked="">
-                            <label class="custom-control-label" for="active">Active</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="inactive">
-                            <label class="custom-control-label" for="inactive">Inactive</label>
-                        </div>
+                        @foreach ($userstatuses as $userstatus)
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input" name="{{ $userstatus->name }}" id="{{ $userstatus->name }}">
+                              <label class="custom-control-label" for="{{ $userstatus->name }}">{{ $userstatus->name }}</label>
+                          </div>
+                          @endforeach
                         @foreach ($profiles as $profile)
                           <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" name="{{ $profile->name }}" id="{{ $profile->id }}">
-                              <label class="custom-control-label" for="manager">{{ $profile->name }}</label>
+                              <input type="checkbox" class="custom-control-input" name="{{ $profile->name }}" id="{{ $profile->name }}">
+                              <label class="custom-control-label" for="{{ $profile->name }}">{{ $profile->name }}</label>
                           </div>
                           @endforeach
                         <div class="custom-control p-t-15">
@@ -175,23 +102,32 @@ Admin - Users
                     </div>
             </div>
             @foreach ($users as $user)
-              <div id="john-doe" class="col-lg-6 col-xl-3">
+              <div id="{{ $user->name }}-{{ $user->lastname }}" class="col-lg-6 col-xl-3">
               <div class="card doctor-box m-b-30">
                 <div class="card-body text-center">
-                    <img src="assets/images/users/boy.svg" class="img-fluid" alt="doctor">
+                    <img src="storage/{{ $user->userpic }}" class="img-fluid circle" alt="doctor">
                     <h5>{{ $user->name }} {{ $user->lastname }}</h5>
                     <p class="mb-0"><span class="badge badge-primary-inverse">{{ $user->profile->name }}</span></p>
                 </div>
                 <div class="card-footer text-center">
                     <div class="row">
                         <div class="col-6 border-right">
-                            <h4><i class="feather icon-message-square text-muted"></i></h4>
-                            <p class="my-2">Send Message</p>
+                          <div class="custom-control">
+
+                            <form class="float-left" action="{{ route('users.destroy',$user) }}" method="POST">
+                              @csrf
+                              {{ method_field('DELETE') }}
+                              <!-- <a href="{{ route('users.destroy', $user) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a> -->
+                              <button type="submit" class="btn btn-round btn-danger" onclick="return confirm('Are you sure you want to delete this user?');" name="button">
+                                <i class="feather icon-trash-2"></i>
+                              </button>
+                            </form>
+
+                          </div>
                         </div>
                         <div class="col-6">
-                          <a href="{{ route('users.show',$user)}}">
-                            <h4><i class="feather icon-user text-muted"></i></h4>
-                            <p class="my-2">View Profile</p>
+                          <a class="btn btn-round btn-primary" href="{{ route('users.edit',$user)}}">
+                            <i class="feather icon-user"></i>
                           </a>
                         </div>
                     </div>
@@ -229,5 +165,39 @@ function myFunction() {
     }
   }
 }
+</script>
+<!-- Pnotify js -->
+<script src="{{ asset('assets/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
+<!-- <script src="{{ asset('assets/js/custom/custom-pnotify.js') }}"></script> -->
+<script type="text/javascript">
+function deleteUser(user) {
+    (new PNotify({
+        title: 'Confirmation Needed',
+        text: 'Delete user: ' + user.name + ' '  + user.lastname + '. Are you sure?',
+        icon: 'glyphicon glyphicon-question-sign',
+        hide: false,
+        confirm: {
+            confirm: true
+        },
+        buttons: {
+            closer: false,
+            sticker: false
+        },
+        history: {
+            history: false
+        },
+        addclass: 'stack-modal',
+        stack: {
+            'dir1': 'down',
+            'dir2': 'right',
+            'modal': true
+        }
+    })).get().on('pnotify.confirm', function() {
+        // $(".deleteRecord").action = "{{ route('users.destroy',$user) }}";
+        $(this).submit();
+    }).on('pnotify.cancel', function() {
+        alert('The user will NOT be deleted.');
+    });
+};
 </script>
 @endsection
