@@ -17,6 +17,15 @@ Admin - Users
     padding-top: 20px !important;
     width: 80px !important;
   }
+  .btn-size
+  {
+    /* width: 120px !important; */
+    width: 90% !important;
+  }
+  .field-size
+  {
+    max-width: 90% !important;
+  }
 </style>
 @endsection
 @section('rightbar-content')
@@ -73,32 +82,44 @@ Admin - Users
                             </div>
                             <div class="col-3">
                                 <ul class="list-inline-group text-right mb-0 pl-0">
-                                    <li class="list-inline-item mr-0 font-12"><a href="#"><i class="feather icon-refresh-cw font-16 text-primary ml-1"></i></a></li>
+                                    <li class="list-inline-item mr-0 font-12"><a href="{{url('/users')}}"><i class="feather icon-refresh-cw font-16 text-primary ml-1"></i></a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="custom-control custom-checkbox">
-                            <input checked type="checkbox" class="custom-control-input" id="all">
+                        <!-- <div class="custom-control custom-checkbox">
+                            <input type="checkbox" value="1" name="all" class="custom-control-input" id="all">
                             <label class="custom-control-label" for="all">All</label>
+                        </div> -->
+                        <div class="custom-control pb-2">
+                          <input type="text" style="max-width:150px;" class="field-size form-control" id="searchbox-input" onkeyup="searchbyname()" placeholder="Search for users">
                         </div>
                         @foreach ($userstatuses as $userstatus)
                           <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" name="{{ $userstatus->name }}" id="{{ $userstatus->name }}">
+                              <input
+                              name="userstatus" type="checkbox" class="custom-control-input"
+                              @if (in_array($userstatus->id, explode(',', request()->input('filter.user_status_id'))))
+                                checked
+                              @endif
+                              value="{{ $userstatus->id }}" id="{{ $userstatus->name }}">
                               <label class="custom-control-label" for="{{ $userstatus->name }}">{{ $userstatus->name }}</label>
                           </div>
                           @endforeach
-                        @foreach ($profiles as $profile)
-                          <div class="custom-control custom-checkbox">
-                              <input type="checkbox" class="custom-control-input" name="{{ $profile->name }}" id="{{ $profile->name }}">
-                              <label class="custom-control-label" for="{{ $profile->name }}">{{ $profile->name }}</label>
-                          </div>
-                          @endforeach
-                        <div class="custom-control p-t-15">
-                        <input type="text" style="max-width:150px;" class="form-control" id="searchbox-input" onkeyup="myFunction()" placeholder="Search for users">
-                        </div>
+                            @foreach ($profiles as $profile)
+                              <div class="custom-control custom-checkbox">
+                                <input name="profile" type="checkbox" class="custom-control-input"
+                                @if (in_array($profile->id, explode(',', request()->input('filter.profile_id'))))
+                                  checked
+                                @endif
+                                value="{{ $profile->id }}" id="{{ $profile->name }}">
+                                <label class="custom-control-label" for="{{ $profile->name }}">{{ $profile->name }}</label>
+                              </div>
+                            @endforeach
                       </div>
+                            <div class="custom-control pb-2 d-flex justify-content-center">
+                              <button class="btn-size btn btn-primary" type="submit" id="filter" name="button"> Filter </button>
+                            </div>
                     </div>
             </div>
             @foreach ($users as $user)
@@ -106,8 +127,8 @@ Admin - Users
               <div class="card doctor-box m-b-30">
                 <div class="card-body text-center">
                     <img src="storage/{{ $user->userpic }}" class="img-fluid circle" alt="doctor">
-                    <h5>{{ $user->name }} {{ $user->lastname }}</h5>
-                    <p class="mb-0"><span class="badge badge-primary-inverse">{{ $user->profile->name }}</span></p>
+                    <h5 class="users" >{{ $user->name }} {{ $user->lastname }}</h5>
+                    <p class="mb-0"><span class="cat badge badge-primary-inverse">{{ $user->profile->name }}</span></p>
                 </div>
                 <div class="card-footer text-center">
                     <div class="row">
@@ -144,60 +165,47 @@ Admin - Users
 @endsection
 @section('script')
 <script>
-function myFunction() {
+function searchbyname() {
   // Declare variables
   var input, filter, ul, li, a, i, txtValue;
   input = document.getElementById('searchbox-input');
   filter = input.value.toUpperCase();
-  card = document.getElementById("users");
-  h5 = card.getElementsByTagName('h5');
+  h5 = document.getElementsByClassName("users");
+
+  // alert(h5[0].innerText.replace(/ /g, "-"));
+  // h5 = card.getElementsByTagName('h5');
   // Loop through all list items, and hide those who don't match the search query
-  for (i = 1; i < h5.length; i++) {
-    id = h5[i].innerText.replace(/ /g, "-").toLowerCase();
+  for (i = 0; i < h5.length; i++) {
+    id = h5[i].innerText.replace(/ /g, "-");
     a = h5[i].innerText;
-    // a = h5[i].getElementsByTagName("a")[0];
-    // txtValue = a.textContent || a.innerText;
     if (a.toUpperCase().indexOf(filter) > -1) {
-    // alert(id);
       document.getElementById(id).style.display = "block";
     } else {
       document.getElementById(id).style.display = "none";
     }
   }
 }
-</script>
-<!-- Pnotify js -->
-<script src="{{ asset('assets/plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
-<!-- <script src="{{ asset('assets/js/custom/custom-pnotify.js') }}"></script> -->
-<script type="text/javascript">
-function deleteUser(user) {
-    (new PNotify({
-        title: 'Confirmation Needed',
-        text: 'Delete user: ' + user.name + ' '  + user.lastname + '. Are you sure?',
-        icon: 'glyphicon glyphicon-question-sign',
-        hide: false,
-        confirm: {
-            confirm: true
-        },
-        buttons: {
-            closer: false,
-            sticker: false
-        },
-        history: {
-            history: false
-        },
-        addclass: 'stack-modal',
-        stack: {
-            'dir1': 'down',
-            'dir2': 'right',
-            'modal': true
-        }
-    })).get().on('pnotify.confirm', function() {
-        // $(".deleteRecord").action = "{{ route('users.destroy',$user) }}";
-        $(this).submit();
-    }).on('pnotify.cancel', function() {
-        alert('The user will NOT be deleted.');
-    });
-};
+function getIds(checkboxName) {
+        let checkBoxes = document.getElementsByName(checkboxName);
+        let ids = Array.prototype.slice.call(checkBoxes)
+                        .filter(ch => ch.checked==true)
+                        .map(ch => ch.value);
+        return ids;
+    }
+
+function filterResults () {
+    let userstatusIds = getIds("userstatus");
+    let profileIds = getIds("profile");
+    let href = 'users?';
+    if(userstatusIds.length) {
+        href += 'filter[user_status_id]=' + userstatusIds;
+    }
+    if(profileIds.length) {
+        href += '&filter[profile_id]=' + profileIds;
+    }
+    document.location.href=href;
+}
+
+document.getElementById("filter").addEventListener("click", filterResults);
 </script>
 @endsection

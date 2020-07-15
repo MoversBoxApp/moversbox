@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 use App\User;
 use App\Profile;
 use App\UserStatus;
@@ -22,14 +24,16 @@ class UsersController extends Controller
      */
     public function index()
     {
-      $users = User::all();
       $profiles = Profile::all();
       $userstatuses = UserStatus::all();
-      return view('users.index', [
-        'users' => $users,
-        'profiles' => $profiles,
-        'userstatuses' => $userstatuses
-      ]);
+      $users = QueryBuilder::for(User::class)
+        ->allowedFilters([
+            AllowedFilter::exact('user_status_id'),
+            AllowedFilter::exact('profile_id'),
+            ])
+        ->get();
+// dd($users);
+    return view('users.index', compact('users', 'userstatuses', 'profiles'));
     }
 
     /**
@@ -159,4 +163,21 @@ class UsersController extends Controller
       $user->delete();
       return redirect('/users');
     }
+
+    /**
+     * get users by profile.
+     *
+     * @param  int  Profile $profile
+     * @return \Illuminate\Http\Response
+     */
+     public function getUsersByProfile(Profile $profile)
+     {
+       $users = User::where('profile_id' , $profile->id);
+       dd($users);
+       // return view('users.index', [
+       //   'users' => $users
+       // ]);
+     }
+
+
 }
