@@ -9,6 +9,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use App\User;
 use App\Profile;
 use App\UserStatus;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -67,14 +68,19 @@ class UsersController extends Controller
           'username' => ['required', 'string', 'max:255', 'unique:users'],
           'phone' => ['required', 'string', 'max:255', 'unique:users'],
           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-          'userpic' => ['required', 'image'],
+          'userpic' => ['image'],
 
       ]);
       $imagePath = request('userpic')->store('uploads','public');
+      if (!request('user_status')) {
+        $userstatus = 2;
+      }else {
+        $userstatus = 1;
+      }
       $user = User::create([
           'name' => $request['name'],
           'profile_id' => $request['profile'],
-          'user_status_id' => $request['status'],
+          'user_status_id' => $userstatus,
           'lastname' => $request['lastname'],
           'username' => $request['username'],
           'email' => $request['email'],
@@ -124,7 +130,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // dd($request);
+      $request->validate([
+          'name' => ['required', 'string', 'max:255'],
+          'profile_id' => '',
+          'userstatus_id' => '',
+          'lastname' => ['required', 'string', 'max:255'],
+          'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'phone' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'userpic' => ['image'],
+      ]);
         if (!request('userpic')) {
           $imagePath = $user->userpic;
         }else {

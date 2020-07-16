@@ -151,4 +151,13 @@ Admin - Users
 <!-- End Contentbar -->
 @endsection
 @section('script')
+<!-- Input Mask js -->
+<script src="{{ asset('assets/plugins/bootstrap-inputmask/jquery.inputmask.bundle.min.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+$('#phone').inputmask("(999)-999-9999");
+$('#email').inputmask("email");
+})
+</script>
 @endsection

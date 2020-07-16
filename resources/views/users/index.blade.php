@@ -88,12 +88,17 @@ Admin - Users
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- <div class="custom-control custom-checkbox">
-                            <input type="checkbox" value="1" name="all" class="custom-control-input" id="all">
-                            <label class="custom-control-label" for="all">All</label>
-                        </div> -->
                         <div class="custom-control pb-2">
                           <input type="text" style="max-width:150px;" class="field-size form-control" id="searchbox-input" onkeyup="searchbyname()" placeholder="Search for users">
+                        </div>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" onchange="enable();"
+
+                          @if (request()->input('all')==='true')
+                            checked
+                          @endif
+                          value="" name="all" class="custom-control-input" id="all">
+                          <label class="custom-control-label" for="all">All</label>
                         </div>
                         @foreach ($userstatuses as $userstatus)
                           <div class="custom-control custom-checkbox">
@@ -126,7 +131,7 @@ Admin - Users
               <div id="{{ $user->name }}-{{ $user->lastname }}" class="col-lg-6 col-xl-3">
               <div class="card doctor-box m-b-30">
                 <div class="card-body text-center">
-                    <img src="storage/{{ $user->userpic }}" class="img-fluid circle" alt="doctor">
+                    <img src="storage/{{ $user->userpic }}" class="img-fluid img-thumbnail circle" alt="doctor">
                     <h5 class="users" >{{ $user->name }} {{ $user->lastname }}</h5>
                     <p class="mb-0"><span class="cat badge badge-primary-inverse">{{ $user->profile->name }}</span></p>
                 </div>
@@ -139,7 +144,7 @@ Admin - Users
                               @csrf
                               {{ method_field('DELETE') }}
                               <!-- <a href="{{ route('users.destroy', $user) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a> -->
-                              <button type="submit" class="btn btn-round btn-danger" onclick="return confirm('Are you sure you want to delete this user?');" name="button">
+                              <button type="submit"  title="Delete User" class="btn btn-round btn-danger" onclick="return confirm('Are you sure you want to delete this user?');" name="button">
                                 <i class="feather icon-trash-2"></i>
                               </button>
                             </form>
@@ -147,7 +152,7 @@ Admin - Users
                           </div>
                         </div>
                         <div class="col-6">
-                          <a class="btn btn-round btn-primary" href="{{ route('users.edit',$user)}}">
+                          <a class="btn btn-round btn-primary" title="View User" href="{{ route('users.edit',$user)}}">
                             <i class="feather icon-user"></i>
                           </a>
                         </div>
@@ -171,9 +176,6 @@ function searchbyname() {
   input = document.getElementById('searchbox-input');
   filter = input.value.toUpperCase();
   h5 = document.getElementsByClassName("users");
-
-  // alert(h5[0].innerText.replace(/ /g, "-"));
-  // h5 = card.getElementsByTagName('h5');
   // Loop through all list items, and hide those who don't match the search query
   for (i = 0; i < h5.length; i++) {
     id = h5[i].innerText.replace(/ /g, "-");
@@ -203,9 +205,23 @@ function filterResults () {
     if(profileIds.length) {
         href += '&filter[profile_id]=' + profileIds;
     }
+        href += '&all=' + document.getElementById("all").checked;
     document.location.href=href;
 }
 
 document.getElementById("filter").addEventListener("click", filterResults);
+function enable()
+{
+  var userstatuses = {!! json_encode($userstatuses->toArray()) !!};
+  var profiles = {!! json_encode($profiles->toArray()) !!};
+  var value = document.getElementById("all").checked;
+  // alert(value);
+  for (var i = 0; i < userstatuses.length; i++) {
+    document.getElementById(userstatuses[i].name).checked = value;
+  }
+  for (var j = 0; j < profiles.length; j++) {
+    document.getElementById(profiles[j].name).checked = value;
+  }
+}
 </script>
 @endsection

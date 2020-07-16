@@ -18,6 +18,12 @@ Admin - Users
     bottom: 0px;
     right: 0px;
   }
+  .circle
+    {
+      height:120px;
+      width:120px;
+      border-radius:50%;
+    }
 </style>
 @endsection
 @section('rightbar-content')
@@ -35,101 +41,113 @@ Admin - Users
                 </ol>
             </div>
         </div>
-        <div class="col-md-4 col-lg-4">
-
-    </div>
+</div>
 </div>
 <!-- End Breadcrumbbar -->
 <!-- Start Contentbar -->
 <div class="contentbar">
-<div class="test">
-  <form method="POST" enctype="multipart/form-data" action="{{ route('users.store') }}">
+  <div class="test">
+    <form method="POST" enctype="multipart/form-data" action="{{ route('users.store') }}">
       @csrf
       <div class="form-row">
-          <div class="form-group col-md-3">
-              <label for="name">First Name</label>
-              <input value="David" name="name" type="text"  class="form-control @error('name') is-invalid @enderror" id="name">
-              @error('name')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-          </div>
-          <div class="form-group col-md-3">
-              <label for="lastname">Last Name</label>
-              <input value="Leal" name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname">
-              @error('lastname')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-          </div>
-          <div class="form-group col-md-3">
-              <label for="userpic">Picture</label>
-              <input name="userpic" type="file" class="form-control-file" id="userpic">
+            <div class="form-group col-md-3 pt-4 ">
+              <img class="img-fluid circle" src="../../storage/uploads/profile.svg" alt="">
+              <label for="userpic"></label>
+              <input value="" name="userpic" type="file" class="form-control-file pt-4" id="userpic">
                   @error('userpic')
                           <strong>{{ $message }}</strong>
                   @enderror
-          </div>
-      </div>
-          <div class="form-row">
-              <div class="form-group col-md-3">
-                  <label for="username">Username</label>
-                  <input value="David" name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username">
-                  @error('username')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+              <div class="pt-4 sw-position custom-control custom-switch">
+                  <input name="user_status" type="checkbox" checked class="custom-control-input" id="user_status">
+                <label class="custom-control-label" for="user_status">Enable / Disable</label>
               </div>
-              <div class="form-group col-md-3">
-                  <label for="email">Email</label>
-                  <input value="david@mail.com" name="email" type="text" class="form-control @error('email') is-invalid @enderror" id="email">
-                  @error('email')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+            </div>
+            <div class="form-group col-md-9">
+              <div class="form-row">
+                  <div class="form-group col-md-3">
+                      <label for="name">First Name</label>
+                      <input value="" name="name" type="text"  class="form-control @error('name') is-invalid @enderror" id="name">
+                      @error('name')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                  </div>
+                  <div class="form-group col-md-3">
+                      <label for="lastname">Last Name</label>
+                      <input value="" name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname">
+                      @error('lastname')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                  </div>
               </div>
-          </div>
-      <div class="form-row">
-          <div class="form-group col-md-3">
-              <label for="profile">Profile</label>
-              <select name="profile" id="profile" class="form-control @error('profile') is-invalid @enderror">
-                    <!-- <option selected value="0" >Select Profile...</option> -->
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="username">Username</label>
+                    <input value="" name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username">
+                    @error('username')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="email">Email</label>
+                    <input value="" name="email" type="text" class="form-control @error('email') is-invalid @enderror" id="email">
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="profile">Profile</label>
+                <select name="profile" id="profile" class="form-control @error('profile') is-invalid @enderror">
                   @foreach ($profiles as $profile)
                     <option value="{{ $profile->id }}">{{ $profile->name }}</option>
                   @endforeach
               </select>
-              @error('profile')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-          </div>
+                @error('profile')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <div class="form-row mt-auto">
+            <div class="col-md-3">
+                <label for="phone">Phone</label>
+                <input value="" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
+                @error('phone')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md-3">
+                <label for=""></label>
+              <button type="submit" class="btn btn-primary alingbottom"><i class="feather icon-plus mr-2"></i>Add User</button>
+            </div>
+        </div>
+            </div>
       </div>
-      <div class="form-row mt-auto">
-          <div class="col-md-3">
-              <label for="phone">Phone</label>
-              <input value="1231231234" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
-              @error('phone')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-          </div>
-          <div class="col-md-3">
-              <label for=""></label>
-            <button type="submit" class="btn btn-primary alingbottom"><i class="feather icon-plus mr-2"></i>Add User</button>
-          </div>
-      </div>
-  </div>
-  </form>
+    </form>
   </div>
 </div>
 <!-- End Contentbar -->
 @endsection
 @section('script')
-<script src="{{ asset('assets/js/custom/custom-inputmask.js') }}"></script>
-
+<!-- Input Mask js -->
+<script src="{{ asset('assets/plugins/bootstrap-inputmask/jquery.inputmask.bundle.min.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+$('#phone').inputmask("(999)-999-9999");
+$('#email').inputmask("email");
+})
+</script>
 @endsection
