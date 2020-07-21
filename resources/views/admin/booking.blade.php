@@ -176,7 +176,7 @@ input::-webkit-inner-spin-button {
                                       </div>
                                   <div class="form-group">
                                       <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="client-phone" name="val-client-phone" placeholder="(__) ___-___-____">
+                                      <input type="text" class="form-control" id="client-phone" name="val-client-phone" placeholder="(__)-___-____">
                                       <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
                                       <input type="text" class="form-control" id="email" name="val-email" placeholder="_@_._">
                                   </div>

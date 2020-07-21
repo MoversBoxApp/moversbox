@@ -61,7 +61,7 @@ $(document).ready(function() {
             if($('.ui-pnotify-closer, .ui-pnotify-sticker, .ui-pnotify-closer *, .ui-pnotify-sticker *').is(e.target))return;
             alert('Hey! You clicked the desktop notification!');
         });
-    });    
+    });
     $('#pnotify-desktop-info').on('click', function() {
         PNotify.desktop.permission();
         (new PNotify( {
@@ -465,7 +465,7 @@ $(document).ready(function() {
                     sticker: true
                 }
             });
-        });        
+        });
     });
     $('#pnotify-multi-line-prompt-dialog').on('click', function() {
         (new PNotify({
@@ -515,7 +515,7 @@ $(document).ready(function() {
                     sticker: true
                 }
             });
-        });        
+        });
     });
     $('#pnotify-notice-with-callback').on('click', function() {
         var dont_alert = function() {};
@@ -582,7 +582,7 @@ $(document).ready(function() {
                 notice.queueRemove();
                 return false;
             }
-        });        
+        });
     });
     function fake_load() {
         var cur_value = 1,
@@ -593,7 +593,7 @@ $(document).ready(function() {
       <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">\
         <span class="sr-only">0%</span>\
       </div>\
-    </div>',            
+    </div>',
             icon: 'fa fa-cog fa-spin',
             hide: false,
             buttons: {

@@ -29,7 +29,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
+
 
     /**
      * Create a new controller instance.
@@ -49,16 +50,16 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-      dd($data);
-        // return Validator::make($data, [
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'profile_id' => ['required'],
-        //     'lastname' => ['required', 'string', 'max:255'],
-        //     'username' => ['required', 'string', 'max:255', 'unique:users'],
-        //     'phone' => ['required', 'string', 'max:255', 'unique:users'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['string', 'min:8', 'confirmed'],
-        // ]);
+      // dd($data);
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'profile_id' => ['required'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'password' => ['string', 'min:8', 'confirmed'],
+        ]);
     }
 
     /**
@@ -69,14 +70,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+      // dd($data);
         return User::create([
             'name' => $data['name'],
             'profile_id' => $data['profile'],
             'lastname' => $data['lastname'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'username' => $data['username'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make('12345678'),
         ]);
     }
 }

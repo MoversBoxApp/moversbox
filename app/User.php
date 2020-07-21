@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Profile;
+use App\UserStatus;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         // 'name', 'lastname', 'email', 'username', 'phone', 'password',
-        'name', 'profile_id', 'email', 'phone', 'password',
+        'name', 'lastname', 'username', 'profile_id', 'user_status_id', 'email', 'phone', 'password', 'userpic'
     ];
 
     /**
@@ -42,5 +43,9 @@ class User extends Authenticatable
     public function profile()
     {
       return $this->belongsTo(Profile::class);
+    }
+    public function user_status()
+    {
+      return $this->belongsTo(UserStatus::class);
     }
 }

@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Profile;
+use App\UserStatus;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -20,12 +26,16 @@ class UsersController extends Controller
      */
     public function index()
     {
-      $users = User::all();
       $profiles = Profile::all();
-      return view('admin.users.index', [
-        'users' => $users,
-        'profiles' => $profiles
-      ]);
+      $userstatuses = UserStatus::all();
+      $users = QueryBuilder::for(User::class)
+        ->allowedFilters([
+            AllowedFilter::exact('user_status_id'),
+            AllowedFilter::exact('profile_id'),
+            ])
+        ->get();
+// dd($users);
+    return view('users.index', compact('users', 'userstatuses', 'profiles'));
     }
 
     /**
@@ -35,7 +45,12 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+      $profiles = Profile::all();
+      $userstatuses = UserStatus::all();
+      return view('users.create', [
+        'profiles' => $profiles,
+        'userstatuses' => $userstatuses
+      ]);
     }
 
     /**
@@ -46,36 +61,42 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-      $rules = array(
+      $request->validate([
           'name' => ['required', 'string', 'max:255'],
-          'profile_id' => ['required'],
+          'profile_id' => '',
+          'userstatus_id' => '',
           'lastname' => ['required', 'string', 'max:255'],
           'username' => ['required', 'string', 'max:255', 'unique:users'],
           'phone' => ['required', 'string', 'max:255', 'unique:users'],
           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-          'password' => ['string', 'min:8', 'confirmed'],
-      );
-      $validator = Validator::make(Input::all(), $rules);
-      if ($validator->fails()) {
-            return Redirect::to('/admin-users')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
-            // store
-            $user = new User;
-            $user->name       = Input::get('name');
-            $user->lastname       = Input::get('lastname');
-            $user->username       = Input::get('username');
-            $user->phone       = Input::get('phone');
-            $user->email      = Input::get('email');
-            $user->password = Input::get('password');
+          'userpic' => ['image'],
 
-            $user->save();
+      ]);
+      if ($request->exists('userpic')) {
+        $imagePath = request('userpic')->store('uploads','s3');
+      }else{
+        $imagePath = 'uploads/profile.svg';
+      }
 
-            // redirect
-            Session::flash('message', 'Successfully created nerd!');
-            return Redirect::to('nerds');
-        }
+      if (!request('user_status')) {
+        $userstatus = 2;
+      }else {
+        $userstatus = 1;
+      }
+      $user = User::create([
+          'name' => $request['name'],
+          'profile_id' => $request['profile'],
+          'user_status_id' => $userstatus,
+          'lastname' => $request['lastname'],
+          'username' => $request['username'],
+          'email' => $request['email'],
+          'phone' => $request['phone'],
+          'password' => Hash::make('12345678'),
+          'userpic' => $imagePath,
+      ]);
+      $profile = Profile::where('id', $request['profile'])->first();
+      $userstatus = UserStatus::where('id', $request['status'])->first();
+      return redirect('/users');
     }
 
     /**
@@ -86,7 +107,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user;
     }
 
     /**
@@ -97,7 +118,13 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+      $profiles = Profile::all();
+      $userstatuses = UserStatus::all();
+      return view('users.edit', [
+        'user' => $user,
+        'profiles' => $profiles,
+        'userstatuses' => $userstatuses
+      ]);
     }
 
     /**
@@ -109,7 +136,41 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+      $request->validate([
+          'name' => ['required', 'string', 'max:255'],
+          'profile_id' => '',
+          'userstatus_id' => '',
+          'lastname' => ['required', 'string', 'max:255'],
+          'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'phone' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+          'userpic' => ['image'],
+      ]);
+        if (!request('userpic')) {
+          $imagePath = $user->userpic;
+        }else {
+          $imagePath = $request->file('userpic')->store('uploads','s3');
+        }
+        if (!request('user_status')) {
+          $userstatus = 2;
+        }else {
+          $userstatus = 1;
+        }
+// dd($userstatus);
+        $user -> update([
+            'name' => $request['name'],
+            'profile_id' => $request['profile'],
+            'user_status_id' => $userstatus,
+            'lastname' => $request['lastname'],
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'password' => $user['password'],
+            'userpic' => $imagePath,
+        ]);
+        // $user->profile()->sync($request->profile);
+        // $user->user_status()->sync($request->user_status);
+        return redirect('/users');
     }
 
     /**
@@ -120,6 +181,24 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+      $user->delete();
+      return redirect('/users');
     }
+
+    /**
+     * get users by profile.
+     *
+     * @param  int  Profile $profile
+     * @return \Illuminate\Http\Response
+     */
+     public function getUsersByProfile(Profile $profile)
+     {
+       $users = User::where('profile_id' , $profile->id);
+       dd($users);
+       // return view('users.index', [
+       //   'users' => $users
+       // ]);
+     }
+
+
 }

@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('/admin-users', 'UsersController');
+Auth::routes(['register' => true]);
+
+
+Route::resource('/users', 'UsersController');
+
 Route::get('/welcome', function () {
         return view('welcome');
 });
@@ -275,4 +279,3 @@ Route::get('/client-public-feedback', function () {
 Route::get('/test', function () {
     return view('admin.test-cargo');
 });
-Auth::routes();
