@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Profile;
 use App\UserStatus;
@@ -71,7 +72,12 @@ class UsersController extends Controller
           'userpic' => ['image'],
 
       ]);
-      $imagePath = request('userpic')->store('uploads','public');
+      if ($request->exists('userpic')) {
+        $imagePath = request('userpic')->store('uploads','s3');
+      }else{
+        $imagePath = 'uploads/profile.svg';
+      }
+
       if (!request('user_status')) {
         $userstatus = 2;
       }else {
@@ -143,7 +149,7 @@ class UsersController extends Controller
         if (!request('userpic')) {
           $imagePath = $user->userpic;
         }else {
-          $imagePath = $request->file('userpic')->store('uploads','public');
+          $imagePath = $request->file('userpic')->store('uploads','s3');
         }
         if (!request('user_status')) {
           $userstatus = 2;

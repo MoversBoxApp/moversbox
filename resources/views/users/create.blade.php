@@ -54,6 +54,7 @@ Admin - Users
               <img class="img-fluid circle" src="../../storage/uploads/profile.svg" alt="">
               <label for="userpic"></label>
               <input value="" name="userpic" type="file" class="form-control-file pt-4" id="userpic">
+              <span class="text-danger">Max size 2MB</span>
                   @error('userpic')
                           <strong>{{ $message }}</strong>
                   @enderror
@@ -66,7 +67,7 @@ Admin - Users
               <div class="form-row">
                   <div class="form-group col-md-3">
                       <label for="name">First Name</label>
-                      <input value="" name="name" type="text"  class="form-control @error('name') is-invalid @enderror" id="name">
+                      <input value="{{ old('name') }}" name="name" type="text"  class="form-control @error('name') is-invalid @enderror" id="name">
                       @error('name')
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
@@ -75,7 +76,7 @@ Admin - Users
                   </div>
                   <div class="form-group col-md-3">
                       <label for="lastname">Last Name</label>
-                      <input value="" name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname">
+                      <input value="{{ old('lastname') }}" name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname">
                       @error('lastname')
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
@@ -86,7 +87,7 @@ Admin - Users
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="username">Username</label>
-                    <input value="" name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username">
+                    <input value="{{ old('username') }}" name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username">
                     @error('username')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -95,7 +96,7 @@ Admin - Users
                 </div>
                 <div class="form-group col-md-3">
                     <label for="email">Email</label>
-                    <input value="" name="email" type="text" class="form-control @error('email') is-invalid @enderror" id="email">
+                    <input value="{{ old('email') }}" name="email" type="text" class="form-control @error('email') is-invalid @enderror" id="email">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -121,7 +122,7 @@ Admin - Users
         <div class="form-row mt-auto">
             <div class="col-md-3">
                 <label for="phone">Phone</label>
-                <input value="" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
+                <input value="{{ old('phone') }}" name="phone" type="text" class="form-control @error('phone') is-invalid @enderror" id="phone">
                 @error('phone')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
