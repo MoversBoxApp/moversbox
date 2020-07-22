@@ -16,6 +16,15 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
       // User::truncate();
+      Profile::create(['name' => 'Administrator']);
+      Profile::create(['name' => 'Sales Manager']);
+      Profile::create(['name' => 'Sales Agent']);
+      Profile::create(['name' => 'Owner Operator']);
+      Profile::create(['name' => 'Affiliate']);
+      Profile::create(['name' => 'Mover']);
+      Profile::create(['name' => 'Client']);
+      UserStatus::create(['name' => 'Enabled']);
+      UserStatus::create(['name' => 'Disabled']);
 
       $adminProfile = Profile::where('name', 'Administrator')->first();
       $salesmanagerProfile = Profile::where('name', 'Sales Manager')->first();
@@ -82,30 +91,28 @@ class UsersTableSeeder extends Seeder
         'password' => Hash::make('12345678'),
         'userpic' => 'uploads/profile.svg'
       ]);
-      $client = User::create([
-        'name' => 'Naomi',
-        'lastname' => 'Wattson',
-        'username' => 'NaomiWattson',
-        'phone' => '607',
-        'email' => 'naomi@mail.com',
-        'password' => Hash::make('12345678'),
-        'userpic' => 'uploads/profile.svg'
-      ]);
+      $names = array('Naomi', 'Julia', 'Java', 'Elizabeth', 'Dave', 'Nicholas', 'Jessica');
+      $lastnames = array('Watson', 'Roberta', 'Script', 'Gilbert', 'Mazzucelli', 'Miller', 'Jones');
+      for ($i=0; $i < count($names); $i++) {
+        $client = User::create([
+          'name' => $names[$i],
+          'lastname' => $lastnames[$i],
+          'username' => $names[$i] . $lastnames[$i],
+          'phone' => '607'.$i,
+          'email' => $names[$i] . '@mail.com',
+          'password' => Hash::make('12345678'),
+          'userpic' => 'uploads/profile.svg'
+        ]);
+        Profile::where('id', 7)->first()->users()->save($client);
+      };
       $adminProfile = $adminProfile->users()->save($admin);
       $salesmanagerProfile = $salesmanagerProfile->users()->save($salesmanager);
       $salesagentProfile = $salesagentProfile->users()->save($salesagent);
       $owneroperatorProfile = $owneroperatorProfile->users()->save($owneroperator);
       $affiliateProfile = $affiliateProfile->users()->save($affiliate);
       $moverProfile = $moverProfile->users()->save($mover);
-      $clientProfile = $clientProfile->users()->save($client);
 
       $enabledUserStatus = $enabledUserStatus->users()->save($admin);
-      // $enabledUserStatus = $enabledUserStatus->users()->save($salesmanager);
-      // $enabledUserStatus = $enabledUserStatus->users()->save($salesagent);
-      // $enabledUserStatus = $enabledUserStatus->users()->save($owneroperator);
-      // $disabledUserStatus = $disabledUserStatus->users()->save($affiliate);
-      // $enabledUserStatus = $enabledUserStatus->users()->save($mover);
-      // $disabledUserStatus = $disabledUserStatus->users()->save($client);
 
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Profile;
 use App\UserStatus;
+use App\Job;
 
 class User extends Authenticatable
 {
@@ -47,5 +48,15 @@ class User extends Authenticatable
     public function user_status()
     {
       return $this->belongsTo(UserStatus::class);
+    }
+    // Jobs
+    public function Jobs()
+    {
+      return $this->belongsToMany(Job::class);
+    }
+    // Clients
+    public function scopeClients($query)
+    {
+        return $query->where('profile_id', 7);
     }
 }

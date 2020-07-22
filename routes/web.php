@@ -16,6 +16,7 @@ Auth::routes(['register' => true]);
 
 
 Route::resource('/users', 'UsersController');
+Route::resource('/moves', 'JobsController');
 
 Route::get('/welcome', function () {
         return view('welcome');
