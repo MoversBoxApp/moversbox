@@ -191,14 +191,61 @@ class UsersController extends Controller
      * @param  int  Profile $profile
      * @return \Illuminate\Http\Response
      */
-     public function getUsersByProfile(Profile $profile)
-     {
-       $users = User::where('profile_id' , $profile->id);
-       dd($users);
-       // return view('users.index', [
-       //   'users' => $users
-       // ]);
-     }
+     public function getUsersByName(Request $request){
+
+      $search = $request->search;
+
+      if($search == ''){
+         $users = User::orderby('name','asc')->select('id','name')->limit(5)->get();
+      }else{
+         $users = User::orderby('name','asc')->select('id','name')->where('name', 'like', '%' .$search . '%')->limit(5)->get();
+      }
+
+      $response = array();
+      foreach($users as $user){
+        $response[] = array(
+          'value'=>$user->id,
+          'label'=>$user->name,
+          'name'=>$user->name,
+          'lastname'=>$user->lastname
+        );
+      }
+
+      return response()->json($response);
+   }
+    /**
+     * get users by profile.
+     *
+     * @param  int  Profile $profile
+     * @return \Illuminate\Http\Response
+     */
+     public function getUsersByPhone(Request $request){
+
+      $search = $request->search;
+
+      if($search == ''){
+         $users = User::orderby('phone','asc')->select('*')->limit(5)->get();
+      }else{
+         $users = User::orderby('phone','asc')->select('*')->where([
+           ['phone', 'like', '%' .$search . '%'],
+           ['profile_id','7']
+           ])->limit(5)->get();
+      }
+
+      $response = array();
+      foreach($users as $user){
+         // $response = $user;
+         $response[] = array(
+           'id'=>$user->id,
+           'label'=>$user->phone,
+           'email'=>$user->email,
+           'name'=>$user->name,
+           'lastname'=>$user->lastname
+         );
+      }
+
+      return response()->json($response);
+   }
 
 
 }

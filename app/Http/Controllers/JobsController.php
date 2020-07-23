@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Job;
+use App\Truck;
 
 class JobsController extends Controller
 {
@@ -27,7 +28,10 @@ class JobsController extends Controller
      */
     public function create()
     {
-        return view('moves.create');
+      $trucks = Truck::all();
+        return view('moves.create',[
+          'trucks' => $trucks
+        ]);
     }
 
     /**

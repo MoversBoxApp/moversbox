@@ -13,6 +13,8 @@ Admin - Booking
 <link href="{{ asset('assets/plugins/datepicker/datepicker.min.css') }}" rel="stylesheet" type="text/css">
 <!-- Select2 css -->
 <link href="{{ asset('assets/plugins/select2/select2.css') }}" rel="stylesheet" type="text/css" />
+<!-- jquery UI css -->
+<link href="{{ asset('assets/js/jqueryui/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
 <style>
 /* .pac-container {
 z-index: 1151 !important;
@@ -22,6 +24,9 @@ z-index: 1151 !important;
 }
 .datepicker{z-index:1151 !important;
 } */
+.company{
+  display: none;
+}
 .datepicker > div {
   display: inherit;
 }
@@ -150,20 +155,26 @@ input::-webkit-inner-spin-button {
                                 <div class="test border rounded tab-pane fade show active" id="new-user" role="tabpanel" aria-labelledby="new-user-tab">
                                     <div class="form-row">
                                       <div class="form-check form-check-inline p-b-20">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                        <input checked onchange="hideCompany()" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                         <label class="form-check-label" for="inlineRadio1">My Home</label>
                                       </div>
                                       <div class="form-check form-check-inline p-b-20">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                        <input onchange="showCompany()" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                         <label class="form-check-label" for="inlineRadio2">A Business</label>
                                       </div>
                                     </div>
                                     <div class="form-row">
-                                          <div class="form-group col-md-12">
+                                          <div id="company" class="company form-group col-md-12">
                                               <label for="useradd">Company</label>
-                                              <input type="text" class="form-control" id="company">
+                                              <input type="text" class="form-control">
                                           </div>
                                       </div>
+                                  <div class="form-group">
+                                      <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
+                                      <input type="text" class="form-control" id="client-phone" name="val-client-phone" placeholder="(__)-___-____">
+                                      <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
+                                      <input type="text" class="form-control" id="email" name="val-email" placeholder="_@_._">
+                                  </div>
                                       <div class="form-row">
                                           <div class="form-group col-md-6">
                                               <label for="username">First Name<span class="text-danger">*</span></label>
@@ -174,12 +185,6 @@ input::-webkit-inner-spin-button {
                                               <input type="text" class="form-control" id="lastname">
                                           </div>
                                       </div>
-                                  <div class="form-group">
-                                      <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="client-phone" name="val-client-phone" placeholder="(__)-___-____">
-                                      <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="email" name="val-email" placeholder="_@_._">
-                                  </div>
                                   <div class="p-t-50">
                                     <button class="btn btn-primary">Add Another Contact</button>
                                   </div>
@@ -399,6 +404,9 @@ input::-webkit-inner-spin-button {
 <!-- End Contentbar -->
 @endsection
 @section('script')
+<!-- jquery -->
+<!-- <script src="{{ asset('assets/js/jquery.min.js') }}"></script> -->
+<script src="{{ asset('assets/js/jqueryui/jquery-ui.min.js') }}"></script>
 <!-- Input Mask js -->
 <script src="{{ asset('assets/plugins/bootstrap-inputmask/jquery.inputmask.bundle.min.js') }}"></script>
 <!-- Form Step js -->
@@ -418,6 +426,7 @@ input::-webkit-inner-spin-button {
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{ Config::get('services.google.key') }}&language=en&region=CA"></script>
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script type="text/javascript">
+//Start - Set cargo
 var livingroomitems = ['One Seater Sofa','Two Seater Sofa','Coffee Table','Large TV',
                       'Small Bench','Medium Bench','Large Bench','Armchair','Sofa Bed'];
 var diningroomitems = ['Bench, Harvest','Buffet','Cabinet China','Cabinet Corner',
@@ -427,10 +436,8 @@ var bedroomitems = ['Bench','Dresser','Bookshelf','Bunk Bed','Cedar Chest','Chai
 var kitchenitems = ['Baker Rack','Breakfast Suite','Breakfast Table','Butcher Block',
                     'Chair, High','Ironing Board','Kitchen Cabinet','Microwave','Serving Cart','Stool','Table',
                     'Utility Cabinet'];
-
 // var arrayselected = [livingroomitems,diningroomitems,bedroomitems,kitcheitems];
 var arrayselected = -1;
-
 function setLivingRoom(){
   $("#selItemsTable td").remove();
   livingroomitems.forEach(addItemsRoom);
@@ -508,5 +515,46 @@ var vl = $(cols[1]).text();
 function itemDelete(ctl) {
   $(ctl).parents("tr").remove();
 };
+//End - Set cargo
+//Start - Show/Hide Company
+function showCompany(){
+  document.getElementById('company').style.display = "block";
+};
+function hideCompany(){
+  document.getElementById('company').style.display = "none";
+};
+//End - Show/Hide Company
+//Start - Autocomplete
+var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+$(document).ready(function(){
+
+  $( "#client-phone" ).autocomplete({
+    source: function( request, response ) {
+      // Fetch data
+      $.ajax({
+        url:"{{route('users.getUsersByPhone')}}",
+        type: 'post',
+        dataType: "json",
+        data: {
+           _token: CSRF_TOKEN,
+           search: request.term
+        },
+        success: function( data ) {
+           response( data );
+        }
+      });
+    },
+    select: function (event, ui) {
+       // Set selection
+       $('#client-phone').val(ui.item.label); // display the selected text
+       // $('#userid').val(ui.item.value); // save selected id to input
+       $('#firstname').val(ui.item.name); // save selected id to input
+       $('#lastname').val(ui.item.lastname); // save selected id to input
+       $('#email').val(ui.item.email); // save selected id to input
+       return false;
+    }
+  });
+
+});
 </script>
 @endsection

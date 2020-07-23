@@ -121,8 +121,8 @@ z-index: 1151 !important;
                                   @endforeach
                                   <td>{{ $job->estimatedTime }}</td>
                                   <td>{{ $job->truck->name }}</td>
-                                  <td>{{ date('H-i A', strtotime($job->start)) }}</td>
-                                  <td>{{ date('H-i A', strtotime($job->end)) }}</td>
+                                  <td>{{ date('H:i A', strtotime($job->start)) }}</td>
+                                  <td>{{ date('H:i A', strtotime($job->end)) }}</td>
                                     <td><span
                                       @if($job->job_status->id === 1)
                                         class="badge badge-primary-inverse"

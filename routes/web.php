@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes(['register' => true]);
 
+Route::post('/users/getUsersByPhone/','UsersController@getUsersByPhone')->name('users.getUsersByPhone');
 
 Route::resource('/users', 'UsersController');
 Route::resource('/moves', 'JobsController');
@@ -278,5 +279,5 @@ Route::get('/client-public-feedback', function () {
 });
 /*Test*/
 Route::get('/test', function () {
-    return view('admin.test-cargo');
+    return view('users.autocomplete');
 });
