@@ -42,7 +42,15 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+          'firstname' => ['required', 'string', 'max:255'],
+          'lastname' => ['required', 'string', 'max:255'],
+          'username' => ['required', 'string', 'max:255'],
+          'client-phone' => ['required', 'string', 'max:255'],
+          'client-email' => ['required', 'string', 'email', 'max:255'],
+          'bookingdate' => ['required', 'string', 'date','max:255'],
+      ]);
+        dd($request);
     }
 
     /**

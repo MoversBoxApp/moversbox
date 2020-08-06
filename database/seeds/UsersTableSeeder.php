@@ -98,7 +98,7 @@ class UsersTableSeeder extends Seeder
           'name' => $names[$i],
           'lastname' => $lastnames[$i],
           'username' => $names[$i] . $lastnames[$i],
-          'phone' => '607'.$i,
+          'phone' => '604-000-000'.$i,
           'email' => $names[$i] . '@mail.com',
           'password' => Hash::make('12345678'),
           'userpic' => 'uploads/profile.svg'

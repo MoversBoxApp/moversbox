@@ -22,6 +22,7 @@ class CreateJobsTable extends Migration
             $table->string('start')->nullable();
             $table->string('end')->nullable();
             $table->float('estimatedTime');
+            $table->string('company')->default('N/A');
             $table->timestamp('bookingdate');
             $table->timestamps();
             $table->foreign('truck_id')->references('id')->on('trucks');

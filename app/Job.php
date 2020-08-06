@@ -7,6 +7,7 @@ use App\Truck;
 use App\User;
 use App\JobStatus;
 use App\TimeFrame;
+use App\Contact;
 
 class Job extends Model
 {
@@ -25,10 +26,14 @@ class Job extends Model
     {
       return $this->belongsTo(TimeFrame::class);
     }
-
     // Users
     public function Users()
     {
       return $this->belongsToMany(User::class);
     }
+    // Contacts
+    public function Contacts()
+      {
+        return $this->hasMany(Contact::class);
+      }
 }

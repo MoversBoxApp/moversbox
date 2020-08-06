@@ -279,5 +279,5 @@ Route::get('/client-public-feedback', function () {
 });
 /*Test*/
 Route::get('/test', function () {
-    return view('users.autocomplete');
+    return view('admin.test');
 });

@@ -131,7 +131,7 @@ Admin - Users
               <div id="{{ $user->name }}-{{ $user->lastname }}" class="col-lg-6 col-xl-3">
               <div class="card doctor-box m-b-30">
                 <div class="card-body text-center">
-                    <img src="storage/{{ $user->userpic }}" class="img-fluid img-thumbnail circle" alt="doctor">
+                    <img src="../storage/{{ $user->userpic }}" class="img-fluid img-thumbnail circle" alt="doctor">
                     <h5 class="users" >{{ $user->name }} {{ $user->lastname }}</h5>
                     <p class="mb-0"><span class="cat badge badge-primary-inverse">{{ $user->profile->name }}</span></p>
                 </div>

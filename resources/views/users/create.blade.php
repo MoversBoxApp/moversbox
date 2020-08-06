@@ -109,7 +109,11 @@ Admin - Users
                 <label for="profile">Profile</label>
                 <select name="profile" id="profile" class="form-control @error('profile') is-invalid @enderror">
                   @foreach ($profiles as $profile)
-                    <option value="{{ $profile->id }}">{{ $profile->name }}</option>
+                    @if ($profile->id === 7)
+                      <option selected value="{{ $profile->id }}">{{ $profile->name }}</option>
+                    @else
+                      <option value="{{ $profile->id }}">{{ $profile->name }}</option>
+                    @endif
                   @endforeach
               </select>
                 @error('profile')

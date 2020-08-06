@@ -27,8 +27,14 @@ z-index: 1151 !important;
 .company{
   display: none;
 }
+.extra-location{
+  display: none;
+}
 .datepicker > div {
   display: inherit;
+}
+.btn-contact-2{
+  color: #FFFFFF !important;
 }
 .modal-content {
     width: 1000px !important;
@@ -143,8 +149,9 @@ input::-webkit-inner-spin-button {
                 <div class="card-body">
                   <div class="card-body">
     <div class="row justify-content-left">
-        <div class="col-lg-12 col-xl-28">
-            <form id="basic-form-wizard" align="left" action="#">
+        <div class="col-lg-9 col-xl-28">
+              <form id="basic-form-wizard" method="POST" enctype="multipart/form-data" action="{{ route('moves.store') }}">
+                @csrf
                 <div class="no">
                     <h3>Client Info</h3>
                     <section>
@@ -162,32 +169,37 @@ input::-webkit-inner-spin-button {
                                         <input onchange="showCompany()" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                         <label class="form-check-label" for="inlineRadio2">A Business</label>
                                       </div>
+                                      <div class="form-check form-check-inline p-b-20 p-l-20">
+                                        <a href="{{ route('users.create')}}">New Client?</a>
+                                      </div>
                                     </div>
                                     <div class="form-row">
-                                          <div id="company" class="company form-group col-md-12">
-                                              <label for="useradd">Company</label>
-                                              <input type="text" class="form-control">
+                                          <div id="company" class="company form-group col-md-9">
+                                              <label for="company">Company</label>
+                                              <input value="{{ old('company') }}" name="company" type="text" class="form-control">
                                           </div>
                                       </div>
-                                  <div class="form-group">
-                                      <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="client-phone" name="val-client-phone" placeholder="(__)-___-____">
-                                      <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" id="email" name="val-email" placeholder="_@_._">
-                                  </div>
-                                      <div class="form-row">
-                                          <div class="form-group col-md-6">
-                                              <label for="username">First Name<span class="text-danger">*</span></label>
-                                              <input type="text" class="form-control" id="firstname">
-                                          </div>
-                                          <div class="form-group col-md-6">
-                                              <label for="useradd">Last Name<span class="text-danger">*</span></label>
-                                              <input type="text" class="form-control" id="lastname">
-                                          </div>
+                                      <div class="input_contacts_wrap">
+                                        <div class="form-group">
+                                            <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
+                                            <input value="{{ old('client-phone.0') }}" type="text" id="client-phone" class="form-control" name="client-phone[]" placeholder="(__)-___-____">
+                                            <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
+                                            <input value="{{ old('client-email') }}" type="text" class="form-control" id="client-email" name="client-email" placeholder="_@_._">
+                                        </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="firstname">First Name<span class="text-danger">*</span></label>
+                                                    <input value="{{ old('firstname.0') }}" type="text" name="firstname[]" class="form-control" id="firstname">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="lastname">Last Name<span class="text-danger">*</span></label>
+                                                    <input value="{{ old('lastname.0') }}" type="text" name="lastname[]" class="form-control" id="lastname">
+                                                </div>
+                                            </div>
+                                        <div class="p-t-50">
+                                          <a id="add_contact" class="add_field_button btn-contact-2 btn btn-primary">Add Another Contact</a>
+                                        </div>
                                       </div>
-                                  <div class="p-t-50">
-                                    <button class="btn btn-primary">Add Another Contact</button>
-                                  </div>
                                 </div>
                             </div>
                     </section>
@@ -197,7 +209,7 @@ input::-webkit-inner-spin-button {
 
                         <div class="test border rounded card-body">
                             <div class="input-group">
-                                <input type="text" id="time-format" class="form-control" placeholder="dd/mm/yyyy - hh:ii aa" aria-describedby="basic-addon5" />
+                                <input value="{{ old('bookingdate') }}" type="text" name="bookingdate" id="time-format" class="form-control" placeholder="dd/mm/yyyy - hh:ii aa" aria-describedby="basic-addon5" />
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon5"><i class="feather icon-calendar"></i></span>
                                 </div>
@@ -210,66 +222,170 @@ input::-webkit-inner-spin-button {
                             <div class="test border rounded card m-b-30">
                                 <div class="card-header">
                                 </div>
-                                <div class="card-body">
-                                <input id="address-0" class="address form-control" type="text"/>
+                                <div class="input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 1</label>
+                                <input value="{{ old('pickup-address.0') }}" name="pickup-address[]" id="address-0" class="address form-control" type="text"/>
                                     <div class="form-row p-t-15">
                                       <div class="form-group col-md-2">
                                           <label for="unit-address-0">Unit #</label>
-                                          <input type="text" class="form-control" id="unit-address-0">
+                                          <input value="{{ old('pickup-unit.0') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-0">
                                       </div>
                                       <div class="col-md-10">
                                         <label for="faddress-0">Address</label>
                                         <input type="text" class="form-control faddress" disabled="true" id="faddress-0">
                                         <!-- <label id="faddress-0" class="faddress p-t-15"></label> -->
                                       </div>
-                                      <div class="col-md-12">
+                                      <div class="col-md-9">
                                         <label>Parking Instructions</label>
-                                        <textarea class="form-control" name="inputTextarea" id="pu-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
+                                        <textarea value="{{ old('pickup-parking.0') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
                                       </div>
-                                      <div class="col-md-12 p-t-15">
+                                      <div class="col-md-9 p-t-15">
                                         <label>Access Information</label>
-                                        <textarea class="form-control" name="inputTextarea" id="pu-access-info" rows="3" placeholder="Stairs..."></textarea>
+                                        <textarea value="{{ old('pickup-access.0') }}" class="form-control"  name="pickup-access[]" id="pu-access-info" rows="3" placeholder="Stairs..."></textarea>
                                       </div>
                                     </div>
 
+                                    <a onclick="SetSummary()" class="btn btn-primary">Get Summary</a>
                                  <div class="p-t-15">
-                                   <button class="btn btn-primary">Add Another Pick Up</button>
+                                   <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
                                  </div>
+                                 <br>
                              </div>
+                                <div id="pickup-1" class="extra-location input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 2</label>
+                                <input value="{{ old('pickup-address.1') }}"  name="pickup-address[]" id="address-1" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-1">Unit #</label>
+                                          <input value="{{ old('pickup-unit.1') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-1">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-1">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-1">
+                                        <!-- <label id="faddress-1" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('pickup-parking.1') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions-1" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('pickup-access.1') }}" class="form-control"  name="pickup-access[]" id="pu-access-info-1" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+
+                                <div id="pickup-2" class="extra-location input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 3</label>
+                                <input value="{{ old('pickup-address.2') }}"  name="pickup-address[]" id="address-2" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-2">Unit #</label>
+                                          <input value="{{ old('pickup-unit.2') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-2">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-2">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-2">
+                                        <!-- <label id="faddress-2" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('pickup-parking.2') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions-2" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('pickup-access.2') }}" class="form-control"  name="pickup-access[]" id="pu-access-info-2" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+
                             </div>
-                    </section>
-                    <h3>Drop Off</h3>
+                    </section><h3>Drop Off</h3>
                     <section>
                         <h4 class="font-22 mb-3">Drop Off Locations</h4>
                             <div class="test border rounded card m-b-30">
                                 <div class="card-header">
                                 </div>
-                                <div class="card-body">
-                                <input id="address-1" class="address form-control" type="text"/>
-                                <div class="form-row p-t-15">
-                                  <div class="form-group col-md-2">
-                                      <label for="unit-address-1">Unit #</label>
-                                      <input type="text" class="form-control" id="unit-address-1">
-                                  </div>
-                                  <div class="col-md-10">
-                                    <label for="faddress-1">Address</label>
-                                    <input type="text" class="form-control faddress" disabled="true" id="faddress-1">
-                                    <!-- <label id="faddress-0" class="faddress p-t-15"></label> -->
-                                  </div>
-                                  <div class="col-md-12">
-                                    <label>Parking Instructions</label>
-                                    <textarea class="form-control" name="inputTextarea" id="do-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
-                                  </div>
-                                  <div class="col-md-12 p-t-15">
-                                    <label>Access Information</label>
-                                    <textarea class="form-control" name="inputTextarea" id="do-access-info" rows="3" placeholder="Stairs..."></textarea>
-                                  </div>
-                                </div>
+                                <div class="input_dropoff_wrap card-body">
+                                  <label class="p-t-20">Drop Off Address # 1</label>
+                                <input value="{{ old('dropoff-address.0') }}" name="dropoff-address[]" id="address-3" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-3">Unit #</label>
+                                          <input value="{{ old('dropoff-unit.0') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-3">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-3">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-3">
+                                        <!-- <label id="faddress-3" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('dropoff-parking.0') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('dropoff-access.0') }}" class="form-control"  name="dropoff-access[]" id="do-access-info" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
 
                                  <div class="p-t-15">
-                                   <button class="btn btn-primary">Add Another Drop Off</button>
+                                   <a id="add_dropoff" class="add_dropoff_button btn-contact-2 btn btn-primary">Add Another Drop Off</a>
                                  </div>
+                                 <br>
                              </div>
+                                <div id="dropoff-1" class="extra-location input_dropoff_wrap card-body">
+                                  <label class="p-t-20">Drop Off Address # 2</label>
+                                <input value="{{ old('dropoff-address.1') }}" name="dropoff-address[]" id="address-4" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-4">Unit #</label>
+                                          <input value="{{ old('dropoff-unit.1') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-4">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-4">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-4">
+                                        <!-- <label id="faddress-4" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('dropoff-parking.1') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions-1" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('dropoff-access.1') }}" class="form-control"  name="dropoff-access[]" id="do-access-info-1" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+
+                                <div id="dropoff-2" class="extra-location input_dropoff_wrap card-body">
+                                  <label class="p-t-20">Drop Off Address # 3</label>
+                                <input value="{{ old('dropoff-address.2') }}" name="dropoff-address[]" id="address-5" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-5">Unit #</label>
+                                          <input value="{{ old('dropoff-unit.2') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-5">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-5">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-5">
+                                        <!-- <label id="faddress-5" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('dropoff-parking.2') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions-2" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('dropoff-access.2') }}" class="form-control"  name="dropoff-access[]" id="do-access-info-2" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+
                             </div>
                     </section>
                       <h3>Scope</h3>
@@ -294,7 +410,7 @@ input::-webkit-inner-spin-button {
                             </div>
                             <br><h5>Select Items</h5>
                             <div class="row table-responsive">
-                              <table id="selItemsTable" class="col-md-12 table table-striped">
+                              <table id="selItemsTable" class="col-md-9 table table-striped">
                                 <thead>
                                   <tr>
                                     <th class="t-items" style="min-width:auto">Item</th>
@@ -338,26 +454,24 @@ input::-webkit-inner-spin-button {
                                 <div class="card-body">
                                     <h6 class="card-subtitle">Available Trucks for the Date selected</h6>
                                     <div class="form-group">
-                                        <select class="form-control" id="select-truck">
-                                            <option>Savana 1</option>
-                                            <option>Savana 2</option>
-                                            <option>3 TON</option>
-                                            <option>5 TON</option>
-                                            <option>External Truck 1</option>
+                                        <select name="truck" class="form-control" id="select-truck">
+                                          @foreach ($trucks as $truck)
+                                            <option value="{{ $truck->id }}" {{ old('truck') == $truck->id ? 'selected' : '' }} >{{ $truck->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                         <h6 class="card-subtitle">Movers</h6>
                                         <div class="form-group">
-                                            <select class="form-control" id="select-movers">
-                                                <option>2 Movers</option>
-                                                <option>3 Movers</option>
-                                                <option>4 Movers</option>
-                                                <option>5 Movers</option>
+                                            <select name="movers" class="form-control" id="select-movers">
+                                                <option value="2" {{ old('movers') == 2 ? 'selected' : '' }} >2 Movers</option>
+                                                <option value="3" {{ old('movers') == 3 ? 'selected' : '' }} >3 Movers</option>
+                                                <option value="4" {{ old('movers') == 4 ? 'selected' : '' }} >4 Movers</option>
+                                                <option value="5" {{ old('movers') == 5 ? 'selected' : '' }} >5 Movers</option>
                                             </select>
                                         </div>
                                         <h6 class="card-subtitle">Estimated Time</h6>
                                         <div class="form-group">
-                                          <input type="text" class="form-control" id="move-estimated-time" name="inputmask-time" placeholder="hh:mm">
+                                          <input value="{{ old('move-estimated-time') }}" type="text" class="form-control" id="move-estimated-time" name="estimated-time" placeholder="0.0">
                                         </div>
                                 </div>
                             </div>
@@ -365,24 +479,10 @@ input::-webkit-inner-spin-button {
                     <h3>Summary</h3>
                     <section>
                         <h4 class="font-22 mb-3">Summary</h4>
-                        <div class="test border rounded custom-control custom-checkbox">
-                          <ul>
-                              <li><strong>Client :</strong> John Doe</li>
-                              <li><strong>Phone Number :</strong> 604-778-0000</li>
-                              <li><strong>Email :</strong> johndoe@gmail.com</li>
-                              <li><strong>Date :</strong> 24-03-2020</li>
-                              <li><strong>Time :</strong> 9:00</li>
-                              <li><strong>Estimated Time :</strong> 3:15</li>
-                              <li><strong>Cargo :</strong> 1 queen box spring mattress set with rails, 42 inch TV, wall mirror and 2 boxes (Home Depot medium sized box).</li>
-                              <li><strong>Pick Up Address :</strong> 123, Street, City.</li>
-                              <li><strong>Drop Off Address :</strong> 125, Street, City.</li>
-                              <li><strong>2nd Contact :</strong> Mark Doe</li>
-                              <li><strong>Phone Number :</strong> 604-778-0001</li>
-                              <li><strong>Note :</strong> His brother will be at the drop off</li>
-                              <li><strong>Truck :</strong> Savana 1</li>
-                              <li><strong>Movers :</strong> 2</li>
-                          </ul>
+                        <div class="summary test border rounded custom-control custom-checkbox">
+
                         </div>
+                        <a onclick="SetSummary()" class="btn btn-primary">Get Summary</a>
                     </section>
                 </div>
             </form>
@@ -550,11 +650,124 @@ $(document).ready(function(){
        // $('#userid').val(ui.item.value); // save selected id to input
        $('#firstname').val(ui.item.name); // save selected id to input
        $('#lastname').val(ui.item.lastname); // save selected id to input
-       $('#email').val(ui.item.email); // save selected id to input
+       $('#client-email').val(ui.item.email); // save selected id to input
        return false;
     }
   });
 
 });
+// Add fields dynamically
+$(document).ready(function() {
+  var max_contacts      = 6; //maximum input boxes allowed
+  var wrapper         = $(".input_contacts_wrap"); //Fields wrapper
+  var add_button      = $(".add_field_button"); //Add button ID
+
+  var x = 1; //initlal text box count
+  $(add_button).click(function(e){ //on add input button click
+      e.preventDefault();
+      if(x < max_contacts){ //max input box allowed
+          x++; //text box increment
+
+          $(wrapper).append('<div class="p-t-30 contact-2">' +
+          '<label class="p-t-20">Contact #' + x + '</label>' +
+          '<div class="form-group">' +
+          '<label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>' +
+          '<input type="text" class="phone_number form-control" name="client-phone[]" placeholder="(__)-___-____"></div>' +
+          '<div class="form-row">' +
+          '<div class="form-group col-md-6">' +
+          '<label for="firstname">First Name<span class="text-danger">*</span></label>' +
+          '<input type="text" name="firstname[]" class="form-control"></div>' +
+          '<div class="form-group col-md-6">' +
+          '<label for="lastname">Last Name<span class="text-danger">*</span></label>' +
+          '<input type="text" name="lastname[]" class="form-control">' +
+          '</div></div></div>' +
+          // $(wrapper).append('<a href="#" id="rm" class="remove_field">Remove</a>');
+          '<br>');
+      }
+  });
+  var max_pickups = 3;
+
+  var y = 1; //initlal text box count
+  $(add_pickup).click(function(e){ //on add input button click
+      e.preventDefault();
+      if(y < max_pickups){ //max input box allowed
+          document.getElementById('pickup-' + y).style.display = "block";
+          y++; //text box increment
+      }else{
+          alert('You can only add ' + y + ' pick up locations.' + y);
+      }
+  });
+
+    var max_dropoffs = 3;
+
+    var w = 1; //initlal text box count
+    $(add_dropoff).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(w < max_dropoffs){ //max input box allowed
+            document.getElementById('dropoff-' + w).style.display = "block";
+            w++; //text box increment
+
+        }else{
+            alert('You can only add ' + w + ' drop off locations.');
+        }
+    });
+});
+function SetSummary(){
+  var summary = $(".summary");
+  var contact = '';
+  var pickup = '';
+  var dropoff = '';
+  var firstname = document.getElementsByName("firstname[]");
+  var lastname = document.getElementsByName("lastname[]");
+  var phone = document.getElementsByName("client-phone[]");
+  var email = document.getElementsByName("client-email")[0].value;
+  var bookingdate = document.getElementsByName("bookingdate")[0].value
+  var pickup_address = document.getElementsByName("pickup-address[]");
+  var pickup_unit = document.getElementsByName("pickup-unit[]");
+  var pickup_parking = document.getElementsByName("pickup-parking[]");
+  var pickup_access = document.getElementsByName("pickup-access[]");
+  var dropoff_address = document.getElementsByName("dropoff-address[]");
+  var dropoff_unit = document.getElementsByName("dropoff-unit[]");
+  var dropoff_parking = document.getElementsByName("dropoff-parking[]");
+  var dropoff_access = document.getElementsByName("dropoff-access[]");
+  var estimated_time = document.getElementsByName("estimated-time")[0].value;
+  var truck = document.getElementById("select-truck");
+  var selectedTruck = truck.options[truck.selectedIndex].text;
+  var movers = document.getElementsByName("movers")[0].value;
+  // alert(pickup_address[1].value);
+for (i = 0; i < firstname.length; i++){
+  contact = contact + '<li><strong>Contact #' + i + ' :</strong>' + firstname[i].value + ' ' + lastname[i].value + '</li>' +
+  '<li><strong>Phone Number :</strong> ' + phone[i].value + '</li>';
+}
+for (j = 0; j < pickup_address.length; j++){
+  if (pickup_address[j].value){
+    // alert(pickup_address[j].value);
+    pickup =  pickup + '<li><strong>Pick Up Address #' + (j+1) + ' :</strong>' +
+              pickup_address[j].value + ', Unit ' + pickup_unit[j].value + '</li>' +
+              '<li><strong>Parking :</strong> ' + pickup_parking[j].value + '</li>' +
+              '<li><strong>Access :</strong> ' + pickup_access[j].value + '</li>';
+  }
+}
+for (k = 0; k < dropoff_address.length; k++){
+  if (dropoff_address[k].value){
+    dropoff =  dropoff + '<li><strong>Drop Off Address #' + k+1 + ' :</strong>' +
+            dropoff_address[k].value + ', Unit ' + dropoff_unit[k].value + '</li>' +
+            '<li><strong>Parking :</strong> ' + dropoff_parking[k].value + '</li>' +
+            '<li><strong>Access :</strong> ' + dropoff_access[k].value + '</li>';
+          }
+}
+  $(summary).empty();
+  $(summary).append(
+    '<ul><li><strong>Email :</strong> ' + email+ '</li>' +
+    contact +
+    pickup +
+    dropoff +
+    '<li><strong>Booking Date :</strong> ' + bookingdate + '</li>' +
+    '<li><strong>Estimated Time :</strong> ' + estimated_time + '</li>' +
+    '<li><strong>Cargo :</strong> 1 queen box spring mattress set with rails, 42 inch TV, wall mirror and 2 boxes (Home Depot medium sized box).</li>' +
+    '<li><strong>Truck :</strong> ' + selectedTruck + '</li>' +
+    '<li><strong>Movers :</strong> ' + movers + '</li></ul>'
+  );
+}
 </script>
 @endsection

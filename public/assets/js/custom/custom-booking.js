@@ -92,8 +92,9 @@ $(document).ready(function() {
       }
   });
   $('#move-time').inputmask("hh:mm");
-  $('#move-estimated-time').inputmask("hh:mm");
+  $('#move-estimated-time').inputmask("decimal");
   $('#client_phone').inputmask("(999)-999-9999");
+  $('.phone_number').inputmask("(999)-999-9999");
   $('#new-contact-phone').inputmask("(999)-999-9999");
-  $('#email').inputmask("email");
+  $('.emailformat').inputmask("email");
 });
