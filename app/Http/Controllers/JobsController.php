@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Job;
+use App\Room;
+use App\Item;
+use App\Cargo;
 use App\Truck;
 
 class JobsController extends Controller
@@ -16,8 +20,23 @@ class JobsController extends Controller
     public function index()
     {
       $jobs = Job::all();
-      return view('moves.index',[
-        'jobs' => $jobs
+      $rooms = Room::all();
+      $items = Item::all();
+      $livingroomitems = DB::table('items')->where('room_id', 1)->get();
+      $diningroomitems = DB::table('items')->where('room_id', 2)->get();
+      $bedroomitems = DB::table('items')->where('room_id', 3)->get();
+      $kitchenitems = DB::table('items')->where('room_id', 4)->get();
+      $cargos = Cargo::all();
+      // return view('moves.index',[
+      return view('admin.test',[
+        'jobs' => $jobs,
+        'rooms' => $rooms,
+        'items' => $items,
+        'cargos' => $cargos,
+        'livingroomitems' => $livingroomitems,
+        'diningroomitems' => $diningroomitems,
+        'bedroomitems' => $bedroomitems,
+        'kitchenitems' => $kitchenitems,
       ]);
     }
 
@@ -42,14 +61,14 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-      $request->validate([
-          'firstname' => ['required', 'string', 'max:255'],
-          'lastname' => ['required', 'string', 'max:255'],
-          'username' => ['required', 'string', 'max:255'],
-          'client-phone' => ['required', 'string', 'max:255'],
-          'client-email' => ['required', 'string', 'email', 'max:255'],
-          'bookingdate' => ['required', 'string', 'date','max:255'],
-      ]);
+      // $request->validate([
+      //     'firstname' => ['required', 'string', 'max:255'],
+      //     'lastname' => ['required', 'string', 'max:255'],
+      //     'username' => ['required', 'string', 'max:255'],
+      //     'client-phone' => ['required', 'string', 'max:255'],
+      //     'client-email' => ['required', 'string', 'email', 'max:255'],
+      //     'bookingdate' => ['required', 'string', 'date','max:255'],
+      // ]);
         dd($request);
     }
 
