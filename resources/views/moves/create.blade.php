@@ -24,6 +24,11 @@ z-index: 1151 !important;
 }
 .datepicker{z-index:1151 !important;
 } */
+.item{
+  border: none !important;
+  width: 120px !important;
+  background-color: transparent !important;
+}
 .company{
   display: none;
 }
@@ -83,7 +88,7 @@ z-index: 1151 !important;
     top: 20px;
   }
   .test{
-    width: 90%;
+    width: 100%;
     margin: auto;
     padding: 15px 15px 15px 15px !important;
     border-color: #8A98AC;
@@ -150,7 +155,7 @@ input::-webkit-inner-spin-button {
                   <div class="card-body">
     <div class="row justify-content-left">
         <div class="col-lg-9 col-xl-28">
-              <form id="basic-form-wizard" method="POST" enctype="multipart/form-data" action="{{ route('moves.store') }}">
+              <form id="basic-form-wizard" onsubmit="sendit()" method="POST" enctype="multipart/form-data" action="{{ route('moves.store') }}">
                 @csrf
                 <div class="no">
                     <h3>Client Info</h3>
@@ -395,18 +400,9 @@ input::-webkit-inner-spin-button {
                           <div class="col-md-6 col-div">
                             <h5>Select a Room</h5>
                             <div class="row btn-block">
-                              <button type="button" onclick="setLivingRoom()" class="col col-md-3 btn btn-room btn-secondary-rgba" name="button">Living Room</button>
-                              <button type="button" onclick="setDiningRoom()" class="col col-md-3 btn btn-room btn-success-rgba" name="button">Dining Room</button>
-                              <button type="button" onclick="setBedRoom()" class="col col-md-3 btn btn-room btn-danger-rgba" name="button">Bedroom</button>
-                              <button type="button" onclick="setKitchen()" class="col col-md-3 btn btn-room btn-secondary-rgba" name="button">Kitchen</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-primary-rgba" name="button">Nursery</button>
-                              <button type="button" onclick="" class="col col-md-3 btn btn-room btn-info-rgba" name="button">Office</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-success-rgba" name="button">Garage</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-warning-rgba" name="button">Outdoor</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-warning-rgba" name="button">Appliances</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-secondary-rgba" name="button">Boxes</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-danger-rgba" name="button">Laundry</button>
-                              <button type="button" class="col col-md-3 btn btn-room btn-primary-rgba" name="button">Storage</button>
+                              @foreach ($rooms as $room)
+                              <button type="button" onclick="set{{ $room->id }}()" class="col col-md-3 btn btn-room btn-{{ $room->btncolor }}-rgba" name="button">{{ $room->name }}</button>
+                              @endforeach
                             </div>
                             <br><h5>Select Items</h5>
                             <div class="row table-responsive">
@@ -527,46 +523,84 @@ input::-webkit-inner-spin-button {
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script type="text/javascript">
 //Start - Set cargo
-var livingroomitems = ['One Seater Sofa','Two Seater Sofa','Coffee Table','Large TV',
-                      'Small Bench','Medium Bench','Large Bench','Armchair','Sofa Bed'];
-var diningroomitems = ['Bench, Harvest','Buffet','Cabinet China','Cabinet Corner',
-                      'Chair Dining','Rug, Large','Rug, Small','Server','Table, Dining','Tea Cart'];
-var bedroomitems = ['Bench','Dresser','Bookshelf','Bunk Bed','Cedar Chest','Chair,Budoir',
-                    'Chair, Stright','Chaise Lounge','Desk','Dresser, Dbl.', 'Exercise Bike'];
-var kitchenitems = ['Baker Rack','Breakfast Suite','Breakfast Table','Butcher Block',
-                    'Chair, High','Ironing Board','Kitchen Cabinet','Microwave','Serving Cart','Stool','Table',
-                    'Utility Cabinet'];
-// var arrayselected = [livingroomitems,diningroomitems,bedroomitems,kitcheitems];
+var livingroomitems = {!! json_encode($livingroomitems->toArray()) !!};
+var diningroomitems = {!! json_encode($diningroomitems->toArray()) !!};
+var bedroomitems = {!! json_encode($bedroomitems->toArray()) !!};
+var kitchenitems = {!! json_encode($kitchenitems->toArray()) !!};
+var nurseryitems = {!! json_encode($nurseryitems->toArray()) !!};
+var officeitems = {!! json_encode($officeitems->toArray()) !!};
+var garageitems = {!! json_encode($garageitems->toArray()) !!};
+var outdooritems = {!! json_encode($outdooritems->toArray()) !!};
+var appliancesitems = {!! json_encode($appliancesitems->toArray()) !!};
+var boxesitems = {!! json_encode($boxesitems->toArray()) !!};
+var othersitems = {!! json_encode($othersitems->toArray()) !!};
+var storageitems = {!! json_encode($storageitems->toArray()) !!};
+var items = livingroomitems.concat(diningroomitems,bedroomitems,kitchenitems,
+                                    nurseryitems,officeitems,garageitems,outdooritems,
+                                    appliancesitems,boxesitems,othersitems,storageitems
+                                      );
+var cargo = Array();
+
 var arrayselected = -1;
-function setLivingRoom(){
+var room = -1;
+function set1(){
   $("#selItemsTable td").remove();
   livingroomitems.forEach(addItemsRoom);
-  arrayselected = 1;
 }
-function setDiningRoom(){
+function set2(){
   $("#selItemsTable td").remove();
   diningroomitems.forEach(addItemsRoom);
-  arrayselected = 2;
 }
-function setBedRoom(){
+function set3(){
   $("#selItemsTable td").remove();
   bedroomitems.forEach(addItemsRoom);
-  arrayselected = 3;
 }
-function setKitchen(){
+function set4(){
   $("#selItemsTable td").remove();
   kitchenitems.forEach(addItemsRoom);
-  arrayselected = 4;
+}
+function set5(){
+  $("#selItemsTable td").remove();
+  nurseryitems.forEach(addItemsRoom);
+}
+function set6(){
+  $("#selItemsTable td").remove();
+  officeitems.forEach(addItemsRoom);
+}
+function set7(){
+  $("#selItemsTable td").remove();
+  garageitems.forEach(addItemsRoom);
+}
+function set8(){
+  $("#selItemsTable td").remove();
+  outdooritems.forEach(addItemsRoom);
+}
+function set9(){
+  $("#selItemsTable td").remove();
+  appliancesitems.forEach(addItemsRoom);
+}
+function set10(){
+  $("#selItemsTable td").remove();
+  boxesitems.forEach(addItemsRoom);
+}
+function set11(){
+  $("#selItemsTable td").remove();
+  othersitems.forEach(addItemsRoom);
+}
+function set12(){
+  $("#selItemsTable td").remove();
+  storageitems.forEach(addItemsRoom);
 }
 function addItemsRoom(x) {
 $("#selItemsTable tbody").append(
   "<tr>" +
-      "<td class='t-items'>" + x + "</td>" +
-      "<td class='t-items'>" + Math.floor(Math.random() * 15) + 1   + "</td>" +
+      "<td class='t-items'>" + x.name + "</td>" +
+      "<td class='t-items'>" + x.cufeet   + "</td>" +
       "<td class='t-items'> <button type='button' onclick='itemTransfer(this)' class='btn btn-round btn-success-rgba'><i class='feather icon-plus'></i></button> </td>" +
   "</tr>"
 
 );
+room = x.room_id;
 }
 function addItemsInventory(y,z) {
   var empty = $("#inventoryItemsTable").find(".footable-empty");
@@ -575,15 +609,15 @@ function addItemsInventory(y,z) {
           }
 $("#inventoryItemsTable tbody").append(
   "<tr>" +
-      "<td class='t-items'>" + y + "</td>" +
-      "<td class='t-items'>" + z  + "</td>" +
+      "<td class='t-items'><input class='item' type='text' name='item[]' value='" + y + "'></td>" +
+      "<td class='t-items'><input class='item' type='text' name='cuft[]' value='" + z  + "'></td>" +
       "<td class='t-items'><input class='dimensions' type='number' min='1' value='1' class='form-control'></td>" +
       "<td class='t-items'>" +
       "<div class='button-list'>" +
-      "<input class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
-      "<input class='dimensions' type='number' step='0.1' min='1' placeholder='Width' >" +
-      "<input class='dimensions' type='number' step='0.1' min='1' placeholder='Depth' >" +
-      "<input class='dimensions' type='number' step='0.1' min='1' placeholder='Height'>" +
+      "<input name='weight[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
+      "<input name='width[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Width' >" +
+      "<input name='depth[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Depth' >" +
+      "<input name='height[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Height'>" +
       "</div>" +
       "</td>" +
       "<td class='t-items'> <button type='button' onclick='itemDelete(this)' class='btn btn-round btn-danger-rgba'><i class='feather icon-trash-2'></i></button> </td>" +
@@ -596,24 +630,113 @@ var _row = $(ctl).parents("tr");
 var cols = _row.children("td");
 var it = $(cols[0]).text();
 var vl = $(cols[1]).text();
-  if (arrayselected==1) {
-    index = livingroomitems.indexOf(it);
+  if (room==1) {
+    index = finditem(livingroomitems, it);
     livingroomitems.splice(index,1);
-  }else if (arrayselected==2) {
-    index = diningroomitems.indexOf(it);
-    diningroomitems.splice(index,1);
-  }else if (arrayselected==3) {
-    index = bedroomitems.indexOf(it);
-    bedroomitems.splice(index,1);
-  }else if (arrayselected==4) {
-    index = kitchenitems.indexOf(it);
-    kitchenitems.splice(index,1);
-  };
+  }else if (room==2) {
+      index = finditem(diningroomitems, it);
+      diningroomitems.splice(index,1);
+  }else if (room==3) {
+      index = finditem(bedroomitems, it);
+      bedroomitems.splice(index,1);
+  }else if (room==4) {
+      index = finditem(kitchenitems, it);
+      kitchenitems.splice(index,1);
+  }else if (room==5) {
+      index = finditem(nurseryitems, it);
+      nurseryitems.splice(index,1);
+  }else if (room==6) {
+      index = finditem(officeitems, it);
+      officeitems.splice(index,1);
+  }else if (room==7) {
+      index = finditem(garageitems, it);
+      garageitems.splice(index,1);
+  }else if (room==8) {
+      index = finditem(outdooritems, it);
+      outdooritems.splice(index,1);
+  }else if (room==9) {
+      index = finditem(appliancesitems, it);
+      appliancesitems.splice(index,1);
+  }else if (room==10) {
+      index = finditem(boxesitems, it);
+      boxesitems.splice(index,1);
+  }else if (room==11) {
+      index = finditem(othersitems, it);
+      othersitems.splice(index,1);
+  }else if (room==12) {
+      index = finditem(storageitems, it);
+      storageitems.splice(index,1);
+  }
   addItemsInventory(it,vl);
   $(ctl).parents("tr").remove();
+  // console.log(cargo);
 };
 function itemDelete(ctl) {
+  var _row = $(ctl).parents("tr");
+  var cols = _row.children("td");
+  var it = cols[0].outerHTML;
+  var item = items.find(function(item, i){
+    if(it.search(item.name)!=-1){
+      cargo.splice(item,1);
+      return item;
+    }
+  });
+  if (item.room_id==1) {
+    livingroomitems.push(item);
+    set1();
+  }else if (item.room_id==2) {
+    diningroomitems.push(item);
+    set2();
+  }else if (item.room_id==3) {
+    bedroomitems.push(item);
+    set3();
+  }else if (item.room_id==4) {
+    kitchenitems.push(item);
+    set4();
+  }else if (item.room_id==5) {
+    nurseryitems.push(item);
+    set5();
+  }else if (item.room_id==6) {
+    officeitems.push(item);
+    set6();
+  }else if (item.room_id==7) {
+    garageitems.push(item);
+    set7();
+  }else if (item.room_id==8) {
+    outdooritems.push(item);
+    set8();
+  }else if (item.room_id==9) {
+    appliancesitems.push(item);
+    set9();
+  }else if (item.room_id==10) {
+    boxesitems.push(item);
+    set10();
+  }else if (item.room_id==11) {
+    othersitems.push(item);
+    set11();
+  }else if (item.room_id==12) {
+    storageitems.push(item);
+    set12();
+  }
   $(ctl).parents("tr").remove();
+  // $("#selItemsTable tbody").append();
+};
+function finditem(array, it){
+  var index = 15;
+  array.find(function(item, i){
+    if(item.name === it){
+      cargo.push(item);
+      index = (i);
+    }
+  });
+  return index;
+};
+function sendit(){
+  var input = document.createElement("input");
+  input.setAttribute("type", "hidden");
+  input.setAttribute("name", "cargo");
+  input.setAttribute("value", JSON.stringify(cargo));
+  document.getElementById("basic-form-wizard").appendChild(input);
 };
 //End - Set cargo
 //Start - Show/Hide Company

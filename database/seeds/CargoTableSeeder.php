@@ -85,7 +85,7 @@ class CargoTableSeeder extends Seeder
         'Rug, Large','Rug, Small','Server','Table, Dining','Tea Cart'
       );
       $itemsBR = array(
-        'Bench','Dresser','Bookshelf','Bunk Bed','Cedar Chest','Chair,Budoir',
+        'Bench','Dresser','Shelf','Bunk Bed','Cedar Chest','Chair,Budoir',
         'Chair, Stright','Chaise Lounge','Desk','Dresser, Dbl.', 'Exercise Bike'
       );
       $itemsKi = array(
@@ -96,7 +96,7 @@ class CargoTableSeeder extends Seeder
       );
       $itemsNu = array(
         'Crib',
-        'Mattress',
+        'Crib Mattress',
         'Nursing Chair',
         'Dressers',
         'Lamp'
@@ -132,7 +132,7 @@ class CargoTableSeeder extends Seeder
       $itemsBx = array(
         'Small Box',
         'Medium Box',
-        'Big Box',
+        'Large Box',
         'Office Box',
         'Wardrobe'
       );
@@ -146,7 +146,7 @@ class CargoTableSeeder extends Seeder
       $itemsSt = array(
         'Small Tote',
         'Medium Tote',
-        'Big Tote',
+        'Large Tote',
         'XL Tote',
         'Flat Tote',
       );
