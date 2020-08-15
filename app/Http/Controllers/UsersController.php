@@ -96,7 +96,7 @@ class UsersController extends Controller
       ]);
       $profile = Profile::where('id', $request['profile'])->first();
       $userstatus = UserStatus::where('id', $request['status'])->first();
-      return redirect('/users');
+      return redirect('/users')->with('message', 'New user successfully added');
     }
 
     /**

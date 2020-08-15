@@ -146,6 +146,15 @@ input::-webkit-inner-spin-button {
 <div class="contentbar">
     <!-- Start row -->
     <div class="row">
+      @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30">
@@ -249,8 +258,6 @@ input::-webkit-inner-spin-button {
                                         <textarea value="{{ old('pickup-access.0') }}" class="form-control"  name="pickup-access[]" id="pu-access-info" rows="3" placeholder="Stairs..."></textarea>
                                       </div>
                                     </div>
-
-                                    <a onclick="SetSummary()" class="btn btn-primary">Get Summary</a>
                                  <div class="p-t-15">
                                    <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
                                  </div>
@@ -522,6 +529,8 @@ input::-webkit-inner-spin-button {
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key={{ Config::get('services.google.key') }}&language=en&region=CA"></script>
 <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 <script type="text/javascript">
+//This variable save the Client id
+var c_id = "0";
 //Start - Set cargo
 var livingroomitems = {!! json_encode($livingroomitems->toArray()) !!};
 var diningroomitems = {!! json_encode($diningroomitems->toArray()) !!};
@@ -611,7 +620,7 @@ $("#inventoryItemsTable tbody").append(
   "<tr>" +
       "<td class='t-items'><input class='item' type='text' name='item[]' value='" + y + "'></td>" +
       "<td class='t-items'><input class='item' type='text' name='cuft[]' value='" + z  + "'></td>" +
-      "<td class='t-items'><input class='dimensions' type='number' min='1' value='1' class='form-control'></td>" +
+      "<td class='t-items'><input class='dimensions' type='number' name='quantity[]' min='1' value='1' class='form-control'></td>" +
       "<td class='t-items'>" +
       "<div class='button-list'>" +
       "<input name='weight[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
@@ -733,10 +742,15 @@ function finditem(array, it){
 };
 function sendit(){
   var input = document.createElement("input");
+  var client_id = document.createElement("input");
+  client_id.setAttribute("type", "hidden");
+  client_id.setAttribute("name", "client_id");
+  client_id.setAttribute("value", c_id);
   input.setAttribute("type", "hidden");
   input.setAttribute("name", "cargo");
   input.setAttribute("value", JSON.stringify(cargo));
   document.getElementById("basic-form-wizard").appendChild(input);
+  document.getElementById("basic-form-wizard").appendChild(client_id);
 };
 //End - Set cargo
 //Start - Show/Hide Company
@@ -770,10 +784,11 @@ $(document).ready(function(){
     select: function (event, ui) {
        // Set selection
        $('#client-phone').val(ui.item.label); // display the selected text
-       // $('#userid').val(ui.item.value); // save selected id to input
-       $('#firstname').val(ui.item.name); // save selected id to input
-       $('#lastname').val(ui.item.lastname); // save selected id to input
-       $('#client-email').val(ui.item.email); // save selected id to input
+       // $('#userid').val(ui.item.value); //
+       c_id = ui.item.id; //
+       $('#firstname').val(ui.item.name); //
+       $('#lastname').val(ui.item.lastname); //
+       $('#client-email').val(ui.item.email); //
        return false;
     }
   });

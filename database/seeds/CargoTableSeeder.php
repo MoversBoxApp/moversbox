@@ -228,16 +228,18 @@ class CargoTableSeeder extends Seeder
 
       /*End Items*/
       /*Cargo*/
+      for ($k=1; $k < 16; $k++) {
       for ($j=1; $j < 16; $j++) {
         Cargo::create([
           'item_id' => rand(1,60),
-          'job_id' => 1,
+          'job_id' => $k,
           'height' => rand(5, 150),
           'width' => rand(5, 150),
           'weight' => rand(5, 150),
           'depth' => rand(5, 150),
           'quantity' => rand(1, 5)
         ]);
+      }
       }
 
     }

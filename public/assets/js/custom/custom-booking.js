@@ -24,9 +24,10 @@ $(document).ready(function() {
     $('#time-format').datepicker({
     	language: 'en',
 	    timeFormat: 'hh:ii aa',
+	    dateFormat: 'yyyy-mm-dd',
 	    autoClose: true,
 	    timepicker: true,
-	    dateTimeSeparator: ' - '
+	    dateTimeSeparator: ' '
 	});
     $('#multi-date').datepicker({
 	    language: 'en',

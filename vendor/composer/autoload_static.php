@@ -487,6 +487,7 @@ class ComposerStaticInit303a4c899bdd641a41f7d124103363d5
     );
 
     public static $classMap = array (
+        'App\\AccessType' => __DIR__ . '/../..' . '/app/AccessType.php',
         'App\\Cargo' => __DIR__ . '/../..' . '/app/Cargo.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Contact' => __DIR__ . '/../..' . '/app/Contact.php',
@@ -515,6 +516,9 @@ class ComposerStaticInit303a4c899bdd641a41f7d124103363d5
         'App\\Item' => __DIR__ . '/../..' . '/app/Item.php',
         'App\\Job' => __DIR__ . '/../..' . '/app/Job.php',
         'App\\JobStatus' => __DIR__ . '/../..' . '/app/JobStatus.php',
+        'App\\Location' => __DIR__ . '/../..' . '/app/Location.php',
+        'App\\LocationType' => __DIR__ . '/../..' . '/app/LocationType.php',
+        'App\\ParkingType' => __DIR__ . '/../..' . '/app/ParkingType.php',
         'App\\Profile' => __DIR__ . '/../..' . '/app/Profile.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -3217,6 +3221,7 @@ class ComposerStaticInit303a4c899bdd641a41f7d124103363d5
         'League\\Flysystem\\Util\\ContentListingFormatter' => __DIR__ . '/..' . '/league/flysystem/src/Util/ContentListingFormatter.php',
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
+        'LocationTableSeeder' => __DIR__ . '/../..' . '/database/seeds/LocationTableSeeder.php',
         'Mockery' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'Mockery\\Adapter\\Phpunit\\Legacy\\TestListenerForV5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/Legacy/TestListenerForV5.php',
         'Mockery\\Adapter\\Phpunit\\Legacy\\TestListenerForV6' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/Legacy/TestListenerForV6.php',

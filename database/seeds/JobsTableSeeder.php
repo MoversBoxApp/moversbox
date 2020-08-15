@@ -34,6 +34,7 @@ class JobsTableSeeder extends Seeder
         JobStatus::create(['name' => 'Confirmed']);
         JobStatus::create(['name' => 'In Progress']);
         JobStatus::create(['name' => 'Cancelled']);
+
         /*Jobs*/
         $names = array('Naomi', 'Julia', 'Java', 'Elizabeth', 'Dave', 'Nicholas', 'Jessica', 'Matt', 'Clark', 'Bruce', 'Harry', 'Luke', 'Frodo', 'Gandalf', 'Sam');
         $lastnames = array('Watson', 'Roberta', 'Script', 'Gilbert', 'Mazzucelli', 'Miller', 'Jones', 'Murdock', 'Kent', 'Wayne', 'Potter', 'Skywalker', 'Baggins', 'The Gray', 'Gamgee');
@@ -51,9 +52,16 @@ class JobsTableSeeder extends Seeder
         ]);
         /*Contacts*/
         Contact::create([
+          'name' => $names[14-$i],
+          'lastname' => $lastnames[$i],
+          'phone' => '604-000-000'.$i,
+          'job_id' => $i+1
+        ]);
+        Contact::create([
           'name' => $names[$i],
           'lastname' => $lastnames[$i],
-          'phone' => '604-000-000'.$i
+          'phone' => '604-000-001'.$i,
+          'job_id' => $i+1
         ]);
         /*JobsUsers*/
         $job->users()->sync([rand(1,6),rand(1,6),rand(7,13)]);

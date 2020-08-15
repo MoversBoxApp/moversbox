@@ -8,9 +8,11 @@ use App\User;
 use App\JobStatus;
 use App\TimeFrame;
 use App\Contact;
+use App\Location;
 
 class Job extends Model
 {
+    protected $guarded = [];
     // Truck
     public function truck()
     {
@@ -30,6 +32,11 @@ class Job extends Model
     public function Users()
     {
       return $this->belongsToMany(User::class);
+    }
+    // Locations
+    public function Locations()
+    {
+      return $this->belongsToMany(Location::class);
     }
     // Contacts
     public function Contacts()

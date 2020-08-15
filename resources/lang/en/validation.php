@@ -146,6 +146,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+      'lastname.*' => 'last name',
+      'firstname.*' => 'first name',
+      'client-email' => 'email address',
+      'bookingdate' => 'booking date',
+      'client-phone.*' => 'phone number',
+      'pickup-address.0' => 'pick up address',
+      'dropoff-address.0' => 'drop off address',
+      'estimated-time' => 'estimated time',
+    ],
 
 ];

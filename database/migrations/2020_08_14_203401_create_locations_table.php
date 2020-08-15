@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCargosTable extends Migration
+class CreateLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateCargosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cargos', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
+            $table->string('address');
+            $table->integer('location_types_id')->unsigned()->default('1');
             $table->integer('job_id')->unsigned()->default('1');
-            $table->integer('item_id')->unsigned()->default('1');
+            $table->string('access')->nullable();
+            $table->string('parking')->nullable();
+            $table->string('unit')->nullable();
             $table->timestamps();
             $table->foreign('job_id')->references('id')->on('jobs');
-            $table->foreign('item_id')->references('id')->on('items');
-            $table->float('height')->nullable();
-            $table->float('width')->nullable();
-            $table->float('weight')->nullable();
-            $table->float('depth')->nullable();
-            $table->integer('quantity');
         });
     }
 
@@ -35,6 +33,6 @@ class CreateCargosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cargos');
+        Schema::dropIfExists('locations');
     }
 }

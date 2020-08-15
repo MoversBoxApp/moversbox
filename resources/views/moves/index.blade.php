@@ -91,7 +91,11 @@ z-index: 1151 !important;
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header">
-                    <!-- <h5 class="card-title">Filtering</h5> -->
+                  @if(session()->has('message'))
+                    <div class="alert alert-success">
+                        {{ session()->get('message') }}
+                    </div>
+                  @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

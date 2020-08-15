@@ -7,6 +7,7 @@ use App\Job;
 
 class Contact extends Model
 {
+    protected $guarded = [];
   // Jobs
   public function Users()
   {

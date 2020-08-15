@@ -7,6 +7,7 @@ use App\Job;
 
 class Cargo extends Model
 {
+    protected $guarded = [];
   // Jobs
   public function Jobs()
   {

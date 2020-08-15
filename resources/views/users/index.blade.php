@@ -76,6 +76,11 @@ Admin - Users
             <!-- Start col -->
                 <div class="card m-b-30 p-b-5">
                     <div class="card-header">
+                      @if(session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session()->get('message') }}
+                        </div>
+                      @endif
                         <div class="row align-items-center">
                             <div class="col-9">
                                 <h5 class="card-title mb-0">Categories</h5>
