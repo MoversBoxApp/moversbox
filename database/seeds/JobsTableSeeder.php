@@ -46,6 +46,7 @@ class JobsTableSeeder extends Seeder
           'time_frame_id' => rand(1,2),
           'job_status_id' => rand(1,5),
           'estimatedTime' => rand(1,6),
+          'email' => $names[$i] . '@mail.com',
           'company' => $lastnames[$i] . ' Corp.',
           'start' => rand(9,17) . ':' . rand(0,59),
           'end' => rand(11,18) . ':' . rand(0,59),

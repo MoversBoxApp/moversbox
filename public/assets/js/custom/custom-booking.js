@@ -21,8 +21,13 @@ $(document).ready(function() {
 	    view: 'months',
 	    dateFormat: 'MM yyyy'
 	});
+      var d = new Date();
+      var month = d.getMonth();
+      var day = d.getDate();
+      var year = d.getFullYear();
     $('#time-format').datepicker({
     	language: 'en',
+      startDate: new Date(year, month, day, '09', '00'),
 	    timeFormat: 'hh:ii aa',
 	    dateFormat: 'yyyy-mm-dd',
 	    autoClose: true,

@@ -67,7 +67,6 @@ z-index: 1151 !important;
             <div class="breadcrumb-list">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/')}}">Admin</a></li>
-                    <li class="breadcrumb-item"><a href="#">Admin</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Moves</li>
                 </ol>
             </div>
@@ -143,7 +142,7 @@ z-index: 1151 !important;
                                   <td>
                                     <div class="button-list">
                                         <a href="#" class="btn btn-primary-rgba"><i class="feather icon-file"></i></a>
-                                        <a href="#" class="btn btn-success-rgba"><i class="feather icon-edit-2"></i></a>
+                                        <a href="{{ route('moves.edit',$job->id)}}" class="btn btn-success-rgba"><i class="feather icon-edit-2"></i></a>
                                         <a href="#" class="btn btn-danger-rgba"><i class="feather icon-trash"></i></a>
                                     </div>
                                   </td>

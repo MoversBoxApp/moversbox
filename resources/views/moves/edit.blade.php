@@ -132,7 +132,7 @@ input::-webkit-inner-spin-button {
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{url('/')}}">Admin</a></li>
                     <li class="breadcrumb-item"><a href="/moves">Moves</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Booking</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Move</li>
                 </ol>
             </div>
         </div>
@@ -183,7 +183,11 @@ input::-webkit-inner-spin-button {
                                         <label class="form-check-label" for="inlineRadio1">My Home</label>
                                       </div>
                                       <div class="form-check form-check-inline p-b-20">
-                                        <input onchange="showCompany()" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                        <input onchange="showCompany()"
+                                          @if($job->company)
+                                            checked
+                                          @endif
+                                         class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                         <label class="form-check-label" for="inlineRadio2">A Business</label>
                                       </div>
                                       <div class="form-check form-check-inline p-b-20 p-l-20">
@@ -193,29 +197,48 @@ input::-webkit-inner-spin-button {
                                     <div class="form-row">
                                           <div id="company" class="company form-group col-md-9">
                                               <label for="company">Company</label>
-                                              <input value="{{ old('company') }}" name="company" type="text" class="form-control">
+                                              <input value="{{ $job->company }}" name="company" type="text" class="form-control">
                                           </div>
                                       </div>
                                       <div class="input_contacts_wrap">
                                         <div class="form-group">
                                             <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
-                                            <input value="{{ old('client-phone.0') }}" type="text" id="client-phone" class="form-control" name="client-phone[]" placeholder="(__)-___-____">
+                                            <input value="{{ $job->contacts->first()->phone }}" type="text" id="client-phone" class="form-control" name="client-phone[]" placeholder="(__)-___-____">
                                             <label class="col-lg-3 col-form-label" for="email">Email <span class="text-danger">*</span></label>
-                                            <input value="{{ old('client-email') }}" type="text" class="form-control" id="client-email" name="client-email" placeholder="_@_._">
+                                            <input value="{{ $job->email }}" type="text" class="form-control" id="client-email" name="client-email" placeholder="_@_._">
                                         </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label for="firstname">First Name<span class="text-danger">*</span></label>
-                                                    <input value="{{ old('firstname.0') }}" type="text" name="firstname[]" class="form-control" id="firstname">
+                                                    <input value="{{ $job->contacts->first()->name }}" type="text" name="firstname[]" class="form-control" id="firstname">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="lastname">Last Name<span class="text-danger">*</span></label>
-                                                    <input value="{{ old('lastname.0') }}" type="text" name="lastname[]" class="form-control" id="lastname">
+                                                    <input value="{{ $job->contacts->first()->lastname }}" type="text" name="lastname[]" class="form-control" id="lastname">
                                                 </div>
                                             </div>
                                         <div class="p-t-50">
                                           <a id="add_contact" class="add_field_button btn-contact-2 btn btn-primary">Add Another Contact</a>
                                         </div>
+                                        @foreach ($job->contacts as $key => $contact)
+                                          @if($key > 0)
+                                            <label class="p-t-20">Contact #{{ $key+1 }}</label>
+                                            <div class="form-group">
+                                              <label class="col-lg-3 col-form-label" for="client-phone">Phone<span class="text-danger">*</span></label>
+                                              <input value="{{ $contact->phone }}" type="text" class="phone_number form-control" name="client-phone[]" placeholder="(__)-___-____">
+                                            </div>
+                                              <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                  <label for="firstname">First Name<span class="text-danger">*</span></label>
+                                                  <input value="{{ $contact->name }}" type="text" name="firstname[]" class="form-control">
+                                                </div>
+                                              <div class="form-group col-md-6">
+                                                <label for="lastname">Last Name<span class="text-danger">*</span></label>
+                                                <input value="{{ $contact->lastname }}" type="text" name="lastname[]" class="form-control">
+                                            </div>
+                                            </div>
+                                          @endif
+                                        @endforeach
                                       </div>
                                 </div>
                             </div>
@@ -226,7 +249,7 @@ input::-webkit-inner-spin-button {
 
                         <div class="test border rounded card-body">
                             <div class="input-group">
-                                <input value="{{ old('bookingdate') }}" type="text" name="bookingdate" id="time-format" class="form-control" placeholder="dd/mm/yyyy - hh:ii aa" aria-describedby="basic-addon5" />
+                                <input value="{{ $job->bookingdate }}" type="text" name="bookingdate" id="time-format" class="form-control" placeholder="dd/mm/yyyy - hh:ii aa" aria-describedby="basic-addon5" />
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon5"><i class="feather icon-calendar"></i></span>
                                 </div>
@@ -239,83 +262,35 @@ input::-webkit-inner-spin-button {
                             <div class="test border rounded card m-b-30">
                                 <div class="card-header">
                                 </div>
-                                <div class="input_pickup_wrap card-body">
-                                  <label class="p-t-20">Pick Up Address # 1</label>
-                                <input value="{{ old('pickup-address.0') }}" name="pickup-address[]" id="address-0" class="address form-control" type="text"/>
-                                    <div class="form-row p-t-15">
-                                      <div class="form-group col-md-2">
-                                          <label for="unit-address-0">Unit #</label>
-                                          <input value="{{ old('pickup-unit.0') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-0">
+                                @foreach($job->locations->where('location_types_id',1) as $key => $location)
+                                  <div class="input_pickup_wrap card-body">
+                                    <label class="p-t-20">Pick Up Address # {{$key+1}}</label>
+                                  <input value="{{ $location->address }}" name="pickup-address[]" class="address form-control" type="text"/>
+                                      <div class="form-row p-t-15">
+                                        <div class="form-group col-md-2">
+                                            <label for="unit-address-0">Unit #</label>
+                                            <input value="{{ $location->unit }}" name="pickup-unit[]" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-10">
+                                          <label for="faddress-0">Address</label>
+                                          <input type="text" class="form-control faddress" disabled="true">
+                                        </div>
+                                        <div class="col-md-9">
+                                          <label>Parking Instructions</label>
+                                          <textarea class="form-control"  name="pickup-parking[]" rows="3" placeholder="...">{{ $location->parking }}</textarea>
+                                        </div>
+                                        <div class="col-md-9 p-t-15">
+                                          <label>Access Information</label>
+                                          <textarea class="form-control"  name="pickup-access[]" rows="3" placeholder="...">{{ $location->access }}</textarea>
+                                        </div>
                                       </div>
-                                      <div class="col-md-10">
-                                        <label for="faddress-0">Address</label>
-                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-0">
-                                        <!-- <label id="faddress-0" class="faddress p-t-15"></label> -->
-                                      </div>
-                                      <div class="col-md-9">
-                                        <label>Parking Instructions</label>
-                                        <textarea value="{{ old('pickup-parking.0') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
-                                      </div>
-                                      <div class="col-md-9 p-t-15">
-                                        <label>Access Information</label>
-                                        <textarea value="{{ old('pickup-access.0') }}" class="form-control"  name="pickup-access[]" id="pu-access-info" rows="3" placeholder="Stairs..."></textarea>
-                                      </div>
-                                    </div>
-                                 <div class="p-t-15">
-                                   <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
-                                 </div>
-                                 <br>
+                                      <br>
+                               </div>
+                                @endforeach
+                             <div class="p-t-15">
+                               <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
                              </div>
-                                <div id="pickup-1" class="extra-location input_pickup_wrap card-body">
-                                  <label class="p-t-20">Pick Up Address # 2</label>
-                                <input value="{{ old('pickup-address.1') }}"  name="pickup-address[]" id="address-1" class="address form-control" type="text"/>
-                                    <div class="form-row p-t-15">
-                                      <div class="form-group col-md-2">
-                                          <label for="unit-address-1">Unit #</label>
-                                          <input value="{{ old('pickup-unit.1') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-1">
-                                      </div>
-                                      <div class="col-md-10">
-                                        <label for="faddress-1">Address</label>
-                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-1">
-                                        <!-- <label id="faddress-1" class="faddress p-t-15"></label> -->
-                                      </div>
-                                      <div class="col-md-9">
-                                        <label>Parking Instructions</label>
-                                        <textarea value="{{ old('pickup-parking.1') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions-1" rows="3" placeholder="Parking in the front..."></textarea>
-                                      </div>
-                                      <div class="col-md-9 p-t-15">
-                                        <label>Access Information</label>
-                                        <textarea value="{{ old('pickup-access.1') }}" class="form-control"  name="pickup-access[]" id="pu-access-info-1" rows="3" placeholder="Stairs..."></textarea>
-                                      </div>
-                                    </div>
-                                 <br>
-                             </div>
-
-                                <div id="pickup-2" class="extra-location input_pickup_wrap card-body">
-                                  <label class="p-t-20">Pick Up Address # 3</label>
-                                <input value="{{ old('pickup-address.2') }}"  name="pickup-address[]" id="address-2" class="address form-control" type="text"/>
-                                    <div class="form-row p-t-15">
-                                      <div class="form-group col-md-2">
-                                          <label for="unit-address-2">Unit #</label>
-                                          <input value="{{ old('pickup-unit.2') }}" name="pickup-unit[]" type="text" class="form-control" id="unit-address-2">
-                                      </div>
-                                      <div class="col-md-10">
-                                        <label for="faddress-2">Address</label>
-                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-2">
-                                        <!-- <label id="faddress-2" class="faddress p-t-15"></label> -->
-                                      </div>
-                                      <div class="col-md-9">
-                                        <label>Parking Instructions</label>
-                                        <textarea value="{{ old('pickup-parking.2') }}" class="form-control"  name="pickup-parking[]" id="pu-pk-instructions-2" rows="3" placeholder="Parking in the front..."></textarea>
-                                      </div>
-                                      <div class="col-md-9 p-t-15">
-                                        <label>Access Information</label>
-                                        <textarea value="{{ old('pickup-access.2') }}" class="form-control"  name="pickup-access[]" id="pu-access-info-2" rows="3" placeholder="Stairs..."></textarea>
-                                      </div>
-                                    </div>
-                                 <br>
-                             </div>
-
+                             <br>
                             </div>
                     </section><h3>Drop Off</h3>
                     <section>
@@ -462,22 +437,22 @@ input::-webkit-inner-spin-button {
                                     <div class="form-group">
                                         <select name="truck" class="form-control" id="select-truck">
                                           @foreach ($trucks as $truck)
-                                            <option value="{{ $truck->id }}" {{ old('truck') == $truck->id ? 'selected' : '' }} >{{ $truck->name }}</option>
+                                            <option value="{{ $truck->id }}" {{ $job->truck_id == $truck->id ? 'selected' : '' }} >{{ $truck->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                         <h6 class="card-subtitle">Movers</h6>
                                         <div class="form-group">
                                             <select name="movers" class="form-control" id="select-movers">
-                                                <option value="2" {{ old('movers') == 2 ? 'selected' : '' }} >2 Movers</option>
-                                                <option value="3" {{ old('movers') == 3 ? 'selected' : '' }} >3 Movers</option>
-                                                <option value="4" {{ old('movers') == 4 ? 'selected' : '' }} >4 Movers</option>
-                                                <option value="5" {{ old('movers') == 5 ? 'selected' : '' }} >5 Movers</option>
+                                                <option value="2" {{ $job->amountOfMovers == 2 ? 'selected' : '' }} >2 Movers</option>
+                                                <option value="3" {{ $job->amountOfMovers == 3 ? 'selected' : '' }} >3 Movers</option>
+                                                <option value="4" {{ $job->amountOfMovers == 4 ? 'selected' : '' }} >4 Movers</option>
+                                                <option value="5" {{ $job->amountOfMovers == 5 ? 'selected' : '' }} >5 Movers</option>
                                             </select>
                                         </div>
                                         <h6 class="card-subtitle">Estimated Time</h6>
                                         <div class="form-group">
-                                          <input value="{{ old('move-estimated-time') }}" type="text" class="form-control" id="move-estimated-time" name="estimated-time" placeholder="0.0">
+                                          <input value="{{ $job->estimatedTime }}" type="text" class="form-control" id="move-estimated-time" name="estimated-time" placeholder="0.0">
                                         </div>
                                 </div>
                             </div>
@@ -768,7 +743,11 @@ function hideCompany(){
 //Start - Autocomplete
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 $(document).ready(function(){
-
+  if (document.getElementById('inlineRadio2').checked) {
+    showCompany();
+  }else {
+    hideCompany();
+  }
   $( "#client-phone" ).autocomplete({
     source: function( request, response ) {
       // Fetch data
@@ -836,7 +815,7 @@ $(document).ready(function() {
           document.getElementById('pickup-' + y).style.display = "block";
           y++; //text box increment
       }else{
-          alert('You can only add ' + y + ' pick up locations.');
+          alert('You can only add ' + y + ' pick up locations.' + y);
       }
   });
 

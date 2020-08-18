@@ -36,7 +36,7 @@ class Job extends Model
     // Locations
     public function Locations()
     {
-      return $this->belongsToMany(Location::class);
+      return $this->hasMany(Location::class);
     }
     // Contacts
     public function Contacts()

@@ -17,23 +17,30 @@ $(document).ready(function() {
       onFinished: function (event, currentIndex)
       {
           $("#basic-form-wizard").submit();
-      }
-  });
-  var verticalform = $("#vertical-form-wizard");
-  verticalform.children("div").steps({
-    headerTag: "h3",
-    bodyTag: "section",
-    transitionEffect: "slideLeft",
-    stepsOrientation: "vertical",
-    onFinishing: function (event, currentIndex)
-      {
-          return verticalform;
       },
-      onFinished: function (event, currentIndex)
+      onStepChanged: function(event, currentIndex, priorIndex)
       {
-          $("#vertical-form-wizard").submit();
+        if (priorIndex === 5) {
+          SetSummary();
+        }
       }
   });
+  // Vertical Form unused
+  // var verticalform = $("#vertical-form-wizard");
+  // verticalform.children("div").steps({
+  //   headerTag: "h3",
+  //   bodyTag: "section",
+  //   transitionEffect: "slideLeft",
+  //   stepsOrientation: "vertical",
+  //   onFinishing: function (event, currentIndex)
+  //     {
+  //         return verticalform;
+  //     },
+  //     onFinished: function (event, currentIndex)
+  //     {
+  //         $("#vertical-form-wizard").submit();
+  //     }
+  // });
   $('#basic-form-wizard .steps').prepend( "<div class='form-wizard-line'></div>" );
 
   var inputs = document.getElementsByClassName('address');
@@ -55,12 +62,12 @@ $(document).ready(function() {
 
 
 function fillIn() {
-console.log(this.inputId);
+// console.log(this.inputId);
 var input = 'faddress-' + this.inputId.split('-')[1];
-console.log(input);
+// console.log(input);
 
 var place = this.getPlace();
 
 // console.log(place.formatted_address);
-document.getElementById(input).value = place.formatted_address;
+// document.getElementById(input).value = place.formatted_address;
 };

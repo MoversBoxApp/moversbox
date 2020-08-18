@@ -21,21 +21,21 @@ class JobsController extends Controller
      */
     public function index()
     {
-      $jobs = Job::all()->sortBy('job_status_id');
+      $jobs = Job::all()->sortBy('bookingdate')->sortBy('job_status_id');
       $rooms = Room::all();
       $items = Item::all();
-      $livingroomitems = DB::table('items')->where('room_id', 1)->get();
-      $diningroomitems = DB::table('items')->where('room_id', 2)->get();
-      $bedroomitems = DB::table('items')->where('room_id', 3)->get();
-      $kitchenitems = DB::table('items')->where('room_id', 4)->get();
-      $nurseryitems = DB::table('items')->where('room_id', 5)->get();
-      $officeitems = DB::table('items')->where('room_id', 6)->get();
-      $garageitems = DB::table('items')->where('room_id', 7)->get();
-      $outdooritems = DB::table('items')->where('room_id', 8)->get();
-      $appliancesitems = DB::table('items')->where('room_id', 9)->get();
-      $boxesitems = DB::table('items')->where('room_id', 10)->get();
-      $othersitems = DB::table('items')->where('room_id', 11)->get();
-      $storageitems = DB::table('items')->where('room_id', 12)->get();
+      // $livingroomitems = DB::table('items')->where('room_id', 1)->get();
+      // $diningroomitems = DB::table('items')->where('room_id', 2)->get();
+      // $bedroomitems = DB::table('items')->where('room_id', 3)->get();
+      // $kitchenitems = DB::table('items')->where('room_id', 4)->get();
+      // $nurseryitems = DB::table('items')->where('room_id', 5)->get();
+      // $officeitems = DB::table('items')->where('room_id', 6)->get();
+      // $garageitems = DB::table('items')->where('room_id', 7)->get();
+      // $outdooritems = DB::table('items')->where('room_id', 8)->get();
+      // $appliancesitems = DB::table('items')->where('room_id', 9)->get();
+      // $boxesitems = DB::table('items')->where('room_id', 10)->get();
+      // $othersitems = DB::table('items')->where('room_id', 11)->get();
+      // $storageitems = DB::table('items')->where('room_id', 12)->get();
       $cargos = Cargo::all();
       return view('moves.index',[
       // return view('admin.test',[
@@ -43,18 +43,18 @@ class JobsController extends Controller
         'rooms' => $rooms,
         'items' => $items,
         'cargos' => $cargos,
-        'livingroomitems' => $livingroomitems,
-        'diningroomitems' => $diningroomitems,
-        'bedroomitems' => $bedroomitems,
-        'kitchenitems' => $kitchenitems,
-        'nurseryitems' => $nurseryitems,
-        'officeitems' => $officeitems,
-        'garageitems' => $garageitems,
-        'outdooritems' => $outdooritems,
-        'appliancesitems' => $appliancesitems,
-        'boxesitems' => $boxesitems,
-        'othersitems' => $othersitems,
-        'storageitems' => $storageitems,
+        // 'livingroomitems' => $livingroomitems,
+        // 'diningroomitems' => $diningroomitems,
+        // 'bedroomitems' => $bedroomitems,
+        // 'kitchenitems' => $kitchenitems,
+        // 'nurseryitems' => $nurseryitems,
+        // 'officeitems' => $officeitems,
+        // 'garageitems' => $garageitems,
+        // 'outdooritems' => $outdooritems,
+        // 'appliancesitems' => $appliancesitems,
+        // 'boxesitems' => $boxesitems,
+        // 'othersitems' => $othersitems,
+        // 'storageitems' => $storageitems,
       ]);
     }
 
@@ -117,7 +117,7 @@ class JobsController extends Controller
           'bookingdate' => ['required', 'string', 'date','max:255'],
           'pickup-address.0' => ['required','max:255'],
           'dropoff-address.0' => ['required','max:255'],
-          'estimated-time' => ['required', 'numeric', 'gt:0', 'max:255'],
+          'estimated-time' => ['required', 'numeric', 'gt:0', 'max:25'],
       ]);
 
         $job = Job::create([
@@ -216,9 +216,45 @@ class JobsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+      $job = Job::find($id);
+      // echo $job->contacts()->first()->name;
+      $trucks = Truck::all();
+      $rooms = Room::all();
+      $items = Item::all();
+      $livingroomitems = DB::table('items')->where('room_id', 1)->get();
+      $diningroomitems = DB::table('items')->where('room_id', 2)->get();
+      $bedroomitems = DB::table('items')->where('room_id', 3)->get();
+      $kitchenitems = DB::table('items')->where('room_id', 4)->get();
+      $nurseryitems = DB::table('items')->where('room_id', 5)->get();
+      $officeitems = DB::table('items')->where('room_id', 6)->get();
+      $garageitems = DB::table('items')->where('room_id', 7)->get();
+      $outdooritems = DB::table('items')->where('room_id', 8)->get();
+      $appliancesitems = DB::table('items')->where('room_id', 9)->get();
+      $boxesitems = DB::table('items')->where('room_id', 10)->get();
+      $othersitems = DB::table('items')->where('room_id', 11)->get();
+      $storageitems = DB::table('items')->where('room_id', 12)->get();
+      $cargos = Cargo::all();
+      return view('moves.edit', [
+        'job' => $job,
+        'trucks' => $trucks,
+        'rooms' => $rooms,
+        'items' => $items,
+        'cargos' => $cargos,
+        'livingroomitems' => $livingroomitems,
+        'diningroomitems' => $diningroomitems,
+        'bedroomitems' => $bedroomitems,
+        'kitchenitems' => $kitchenitems,
+        'nurseryitems' => $nurseryitems,
+        'officeitems' => $officeitems,
+        'garageitems' => $garageitems,
+        'outdooritems' => $outdooritems,
+        'appliancesitems' => $appliancesitems,
+        'boxesitems' => $boxesitems,
+        'othersitems' => $othersitems,
+        'storageitems' => $storageitems,
+      ]);
     }
 
     /**

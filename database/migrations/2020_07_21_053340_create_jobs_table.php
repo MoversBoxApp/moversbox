@@ -21,6 +21,7 @@ class CreateJobsTable extends Migration
             $table->integer('amountOfMovers');
             $table->string('start')->nullable();
             $table->string('end')->nullable();
+            $table->string('email');
             $table->float('estimatedTime');
             $table->string('company')->default('N/A')->nullable();
             $table->timestamp('bookingdate');
