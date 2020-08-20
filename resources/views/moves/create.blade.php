@@ -623,13 +623,13 @@ $("#inventoryItemsTable tbody").append(
   "<tr>" +
       "<td class='t-items'><input class='item' type='text' name='item[]' value='" + y + "'></td>" +
       "<td class='t-items'><input class='item' type='text' name='cuft[]' value='" + z  + "'></td>" +
-      "<td class='t-items'><input class='dimensions' type='number' name='quantity[]' min='1' value='1' class='form-control'></td>" +
+      "<td class='t-items'><input class='dimensions' type='number' value='{{ old('quantity.0') }}' name='quantity[]' min='1' value='1' class='form-control'></td>" +
       "<td class='t-items'>" +
       "<div class='button-list'>" +
-      "<input name='weight[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
-      "<input name='width[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Width' >" +
-      "<input name='depth[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Depth' >" +
-      "<input name='height[]' class='dimensions' type='number' step='0.1' min='1' placeholder='Height'>" +
+      "<input name='weight[]' value='{{ old('weight.0') }}' class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
+      "<input name='width[]' value='{{ old('width.0') }}' class='dimensions' type='number' step='0.1' min='1' placeholder='Width' >" +
+      "<input name='depth[]' value='{{ old('depth.0') }}' class='dimensions' type='number' step='0.1' min='1' placeholder='Depth' >" +
+      "<input name='height[]' value='{{ old('height.0') }}' class='dimensions' type='number' step='0.1' min='1' placeholder='Height'>" +
       "</div>" +
       "</td>" +
       "<td class='t-items'> <button type='button' onclick='itemDelete(this)' class='btn btn-round btn-danger-rgba'><i class='feather icon-trash-2'></i></button> </td>" +

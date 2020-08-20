@@ -7,7 +7,12 @@
 $(document).ready(function() {
     /* -- Table - Footable -- */
     $('.foo-basic-table').footable();
-    $('.foo-filtering-table').footable();
+    $('.foo-filtering-table').footable(
+    //   {
+    //   "paging": {"enabled": true,
+    //   "pageSize":50}
+    // }
+  );
     $('.foo-pagination-table').footable({
 		"columns": $.get('../../assets/plugins/footable/columns.json'),
 		"rows": $.get('../../assets/plugins/footable/rows.json')

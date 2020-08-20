@@ -224,12 +224,12 @@ class UsersController extends Controller
       $search = $request->search;
 
       if($search == ''){
-         $users = User::orderby('phone','asc')->select('*')->limit(5)->get();
+         $users = User::orderby('phone','asc')->select('*')->limit(15)->get();
       }else{
          $users = User::orderby('phone','asc')->select('*')->where([
            ['phone', 'like', '%' .$search . '%'],
            ['profile_id','7']
-           ])->limit(5)->get();
+           ])->limit(15)->get();
       }
 
       $response = array();

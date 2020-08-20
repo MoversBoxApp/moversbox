@@ -167,8 +167,9 @@ input::-webkit-inner-spin-button {
                   <div class="card-body">
     <div class="row justify-content-left">
         <div class="col-lg-9 col-xl-28">
-              <form id="basic-form-wizard" onsubmit="sendit()" method="POST" enctype="multipart/form-data" action="{{ route('moves.store') }}">
+              <form id="basic-form-wizard" onsubmit="sendit()" method="POST" enctype="multipart/form-data" action="{{ route('moves.update',$job->id) }}">
                 @csrf
+                {{ method_field('PUT') }}
                 <div class="no">
                     <h3>Client Info</h3>
                     <section>
@@ -262,35 +263,83 @@ input::-webkit-inner-spin-button {
                             <div class="test border rounded card m-b-30">
                                 <div class="card-header">
                                 </div>
-                                @foreach($job->locations->where('location_types_id',1) as $key => $location)
-                                  <div class="input_pickup_wrap card-body">
-                                    <label class="p-t-20">Pick Up Address # {{$key+1}}</label>
-                                  <input value="{{ $location->address }}" name="pickup-address[]" class="address form-control" type="text"/>
-                                      <div class="form-row p-t-15">
-                                        <div class="form-group col-md-2">
-                                            <label for="unit-address-0">Unit #</label>
-                                            <input value="{{ $location->unit }}" name="pickup-unit[]" type="text" class="form-control">
-                                        </div>
-                                        <div class="col-md-10">
-                                          <label for="faddress-0">Address</label>
-                                          <input type="text" class="form-control faddress" disabled="true">
-                                        </div>
-                                        <div class="col-md-9">
-                                          <label>Parking Instructions</label>
-                                          <textarea class="form-control"  name="pickup-parking[]" rows="3" placeholder="...">{{ $location->parking }}</textarea>
-                                        </div>
-                                        <div class="col-md-9 p-t-15">
-                                          <label>Access Information</label>
-                                          <textarea class="form-control"  name="pickup-access[]" rows="3" placeholder="...">{{ $location->access }}</textarea>
-                                        </div>
+                                <div id="pickup-0" class="input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 1</label>
+                                <input value="{{ old('pickup-address.0') }}" name="pickup-address[]" id="pu_address-0" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-0">Unit #</label>
+                                          <input value="{{ old('pickup-unit.0') }}" name="pickup-unit[]" type="text" class="form-control" id="pu_unit-0">
                                       </div>
-                                      <br>
-                               </div>
-                                @endforeach
-                             <div class="p-t-15">
-                               <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
+                                      <div class="col-md-10">
+                                        <label for="faddress-0">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-0">
+                                        <!-- <label id="faddress-0" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('pickup-parking.0') }}" class="form-control"  name="pickup-parking[]" id="pu_parking-0" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('pickup-access.0') }}" class="form-control"  name="pickup-access[]" id="pu_access-0" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
                              </div>
-                             <br>
+                                <div id="pickup-1" class="extra-location input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 2</label>
+                                <input value="{{ old('pickup-address.1') }}"  name="pickup-address[]" id="pu_address-1" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-1">Unit #</label>
+                                          <input value="{{ old('pickup-unit.1') }}" name="pickup-unit[]" type="text" class="form-control" id="pu_unit-1">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-1">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-1">
+                                        <!-- <label id="faddress-1" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('pickup-parking.1') }}" class="form-control"  name="pickup-parking[]" id="pu_parking-1" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('pickup-access.1') }}" class="form-control"  name="pickup-access[]" id="pu_access-1" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+
+                                <div id="pickup-2" class="extra-location input_pickup_wrap card-body">
+                                  <label class="p-t-20">Pick Up Address # 3</label>
+                                <input value="{{ old('pickup-address.2') }}"  name="pickup-address[]" id="pu_address-2" class="address form-control" type="text"/>
+                                    <div class="form-row p-t-15">
+                                      <div class="form-group col-md-2">
+                                          <label for="unit-address-2">Unit #</label>
+                                          <input value="{{ old('pickup-unit.2') }}" name="pickup-unit[]" type="text" class="form-control" id="pu_unit-2">
+                                      </div>
+                                      <div class="col-md-10">
+                                        <label for="faddress-2">Address</label>
+                                        <input type="text" class="form-control faddress" disabled="true" id="faddress-2">
+                                        <!-- <label id="faddress-2" class="faddress p-t-15"></label> -->
+                                      </div>
+                                      <div class="col-md-9">
+                                        <label>Parking Instructions</label>
+                                        <textarea value="{{ old('pickup-parking.2') }}" class="form-control"  name="pickup-parking[]" id="pu_parking-2" rows="3" placeholder="Parking in the front..."></textarea>
+                                      </div>
+                                      <div class="col-md-9 p-t-15">
+                                        <label>Access Information</label>
+                                        <textarea value="{{ old('pickup-access.2') }}" class="form-control"  name="pickup-access[]" id="pu_access-2" rows="3" placeholder="Stairs..."></textarea>
+                                      </div>
+                                    </div>
+                                 <br>
+                             </div>
+                          <div class="p-t-15">
+                            <a id="add_pickup" class="add_pickup_button btn-contact-2 btn btn-primary">Add Another Pick Up</a>
+                          </div>
+
                             </div>
                     </section><h3>Drop Off</h3>
                     <section>
@@ -298,13 +347,13 @@ input::-webkit-inner-spin-button {
                             <div class="test border rounded card m-b-30">
                                 <div class="card-header">
                                 </div>
-                                <div class="input_dropoff_wrap card-body">
+                                <div id="dropoff-0" class="input_dropoff_wrap card-body">
                                   <label class="p-t-20">Drop Off Address # 1</label>
-                                <input value="{{ old('dropoff-address.0') }}" name="dropoff-address[]" id="address-3" class="address form-control" type="text"/>
+                                <input value="{{ old('dropoff-address.0') }}" name="dropoff-address[]" id="do_address-0" class="address form-control" type="text"/>
                                     <div class="form-row p-t-15">
                                       <div class="form-group col-md-2">
-                                          <label for="unit-address-3">Unit #</label>
-                                          <input value="{{ old('dropoff-unit.0') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-3">
+                                          <label for="do_unit_0">Unit #</label>
+                                          <input value="{{ old('dropoff-unit.0') }}" name="dropoff-unit[]" type="text" class="form-control" id="do_unit-0">
                                       </div>
                                       <div class="col-md-10">
                                         <label for="faddress-3">Address</label>
@@ -313,26 +362,23 @@ input::-webkit-inner-spin-button {
                                       </div>
                                       <div class="col-md-9">
                                         <label>Parking Instructions</label>
-                                        <textarea value="{{ old('dropoff-parking.0') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions" rows="3" placeholder="Parking in the front..."></textarea>
+                                        <textarea value="{{ old('dropoff-parking.0') }}" class="form-control"  name="dropoff-parking[]" id="do_parking-0" rows="3" placeholder="Parking in the front..."></textarea>
                                       </div>
                                       <div class="col-md-9 p-t-15">
                                         <label>Access Information</label>
-                                        <textarea value="{{ old('dropoff-access.0') }}" class="form-control"  name="dropoff-access[]" id="do-access-info" rows="3" placeholder="Stairs..."></textarea>
+                                        <textarea value="{{ old('dropoff-access.0') }}" class="form-control"  name="dropoff-access[]" id="do_access-0" rows="3" placeholder="Stairs..."></textarea>
                                       </div>
                                     </div>
 
-                                 <div class="p-t-15">
-                                   <a id="add_dropoff" class="add_dropoff_button btn-contact-2 btn btn-primary">Add Another Drop Off</a>
-                                 </div>
                                  <br>
                              </div>
                                 <div id="dropoff-1" class="extra-location input_dropoff_wrap card-body">
                                   <label class="p-t-20">Drop Off Address # 2</label>
-                                <input value="{{ old('dropoff-address.1') }}" name="dropoff-address[]" id="address-4" class="address form-control" type="text"/>
+                                <input value="{{ old('dropoff-address.1') }}" name="dropoff-address[]" id="do_address-1" class="address form-control" type="text"/>
                                     <div class="form-row p-t-15">
                                       <div class="form-group col-md-2">
                                           <label for="unit-address-4">Unit #</label>
-                                          <input value="{{ old('dropoff-unit.1') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-4">
+                                          <input value="{{ old('dropoff-unit.1') }}" name="dropoff-unit[]" type="text" class="form-control" id="do_unit-1">
                                       </div>
                                       <div class="col-md-10">
                                         <label for="faddress-4">Address</label>
@@ -341,11 +387,11 @@ input::-webkit-inner-spin-button {
                                       </div>
                                       <div class="col-md-9">
                                         <label>Parking Instructions</label>
-                                        <textarea value="{{ old('dropoff-parking.1') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions-1" rows="3" placeholder="Parking in the front..."></textarea>
+                                        <textarea value="{{ old('dropoff-parking.1') }}" class="form-control"  name="dropoff-parking[]" id="do_parking-1" rows="3" placeholder="Parking in the front..."></textarea>
                                       </div>
                                       <div class="col-md-9 p-t-15">
                                         <label>Access Information</label>
-                                        <textarea value="{{ old('dropoff-access.1') }}" class="form-control"  name="dropoff-access[]" id="do-access-info-1" rows="3" placeholder="Stairs..."></textarea>
+                                        <textarea value="{{ old('dropoff-access.1') }}" class="form-control"  name="dropoff-access[]" id="do_access-1" rows="3" placeholder="Stairs..."></textarea>
                                       </div>
                                     </div>
                                  <br>
@@ -353,11 +399,11 @@ input::-webkit-inner-spin-button {
 
                                 <div id="dropoff-2" class="extra-location input_dropoff_wrap card-body">
                                   <label class="p-t-20">Drop Off Address # 3</label>
-                                <input value="{{ old('dropoff-address.2') }}" name="dropoff-address[]" id="address-5" class="address form-control" type="text"/>
+                                <input value="{{ old('dropoff-address.2') }}" name="dropoff-address[]" id="do_address-2" class="address form-control" type="text"/>
                                     <div class="form-row p-t-15">
                                       <div class="form-group col-md-2">
                                           <label for="unit-address-5">Unit #</label>
-                                          <input value="{{ old('dropoff-unit.2') }}" name="dropoff-unit[]" type="text" class="form-control" id="unit-address-5">
+                                          <input value="{{ old('dropoff-unit.2') }}" name="dropoff-unit[]" type="text" class="form-control" id="do_unit-2">
                                       </div>
                                       <div class="col-md-10">
                                         <label for="faddress-5">Address</label>
@@ -366,16 +412,18 @@ input::-webkit-inner-spin-button {
                                       </div>
                                       <div class="col-md-9">
                                         <label>Parking Instructions</label>
-                                        <textarea value="{{ old('dropoff-parking.2') }}" class="form-control"  name="dropoff-parking[]" id="do-pk-instructions-2" rows="3" placeholder="Parking in the front..."></textarea>
+                                        <textarea value="{{ old('dropoff-parking.2') }}" class="form-control"  name="dropoff-parking[]" id="do_parking-2" rows="3" placeholder="Parking in the front..."></textarea>
                                       </div>
                                       <div class="col-md-9 p-t-15">
                                         <label>Access Information</label>
-                                        <textarea value="{{ old('dropoff-access.2') }}" class="form-control"  name="dropoff-access[]" id="do-access-info-2" rows="3" placeholder="Stairs..."></textarea>
+                                        <textarea value="{{ old('dropoff-access.2') }}" class="form-control"  name="dropoff-access[]" id="do_access-2" rows="3" placeholder="Stairs..."></textarea>
                                       </div>
                                     </div>
                                  <br>
                              </div>
-
+                              <div class="p-t-15">
+                                <a id="add_dropoff" class="add_dropoff_button btn-contact-2 btn btn-primary">Add Another Drop Off</a>
+                              </div>
                             </div>
                     </section>
                       <h3>Scope</h3>
@@ -522,11 +570,14 @@ var appliancesitems = {!! json_encode($appliancesitems->toArray()) !!};
 var boxesitems = {!! json_encode($boxesitems->toArray()) !!};
 var othersitems = {!! json_encode($othersitems->toArray()) !!};
 var storageitems = {!! json_encode($storageitems->toArray()) !!};
+var cargos = {!! json_encode($cargos->toArray()) !!};
 var items = livingroomitems.concat(diningroomitems,bedroomitems,kitchenitems,
                                     nurseryitems,officeitems,garageitems,outdooritems,
                                     appliancesitems,boxesitems,othersitems,storageitems
-                                      );
+                                  );
+var locations = {!! json_encode($job->locations->toArray()) !!};
 var cargo = Array();
+cargo = cargos;
 
 var arrayselected = -1;
 var room = -1;
@@ -807,21 +858,45 @@ $(document).ready(function() {
       }
   });
   var max_pickups = 3;
+  var max_dropoffs = 3;
+  var pu_l = 0;
+  var do_l = 0;
+  var y = 0; //initlal text box count
+  var w = 0; //initlal text box count
+  locations.forEach((item) => {
+    if (item.location_types_id==='1') {
+          document.getElementById('pickup-' + pu_l).style.display = "block";
+          //Fieldsnedd to be filled
+          document.getElementById('pu_address-' + pu_l).value = item.address;
+          document.getElementById('pu_unit-' + pu_l).value = item.unit;
+          document.getElementById('pu_parking-' + pu_l).value = item.parking;
+          document.getElementById('pu_access-' + pu_l).value = item.access;
+          pu_l++;
+          y++;
+    }else if (item.location_types_id==='2') {
+          document.getElementById('pickup-' + do_l).style.display = "block";
+          //Fieldsnedd to be filled
+          document.getElementById('do_address-' + do_l).value = item.address;
+          document.getElementById('do_unit-' + do_l).value = item.unit;
+          document.getElementById('do_parking-' + do_l).value = item.parking;
+          document.getElementById('do_access-' + do_l).value = item.access;
+          do_l++;
+          w++;
+    }
+  });
 
-  var y = 1; //initlal text box count
+
   $(add_pickup).click(function(e){ //on add input button click
       e.preventDefault();
       if(y < max_pickups){ //max input box allowed
           document.getElementById('pickup-' + y).style.display = "block";
           y++; //text box increment
       }else{
-          alert('You can only add ' + y + ' pick up locations.' + y);
+          alert('You can only add ' + y + ' pick up locations.');
       }
   });
 
-    var max_dropoffs = 3;
 
-    var w = 1; //initlal text box count
     $(add_dropoff).click(function(e){ //on add input button click
         e.preventDefault();
         if(w < max_dropoffs){ //max input box allowed
@@ -832,6 +907,26 @@ $(document).ready(function() {
             alert('You can only add ' + w + ' drop off locations.');
         }
     });
+    // Load cargos
+    cargos.forEach((item, i) => {
+      $("#inventoryItemsTable tbody").append(
+        "<tr>" +
+            "<td class='t-items'><input class='item' type='text' name='item[]' value='" + item.name + "'></td>" +
+            "<td class='t-items'><input class='item' type='text' name='cuft[]' value='" + item.cufeet  + "'></td>" +
+            "<td class='t-items'><input class='dimensions' type='number' name='quantity[]' min='1' value='" + item.quantity  + "' class='form-control'></td>" +
+            "<td class='t-items'>" +
+            "<div class='button-list'>" +
+            "<input name='weight[]' value='" + item.weight  + "' class='dimensions' type='number' step='0.1' min='1' placeholder='Weight'>" +
+            "<input name='width[]' value='" + item.width  + "' class='dimensions' type='number' step='0.1' min='1' placeholder='Width' >" +
+            "<input name='depth[]' value='" + item.depth  + "' class='dimensions' type='number' step='0.1' min='1' placeholder='Depth' >" +
+            "<input name='height[]' value='" + item.height  + "' class='dimensions' type='number' step='0.1' min='1' placeholder='Height'>" +
+            "</div>" +
+            "</td>" +
+            "<td class='t-items'> <button type='button' onclick='itemDelete(this)' class='btn btn-round btn-danger-rgba'><i class='feather icon-trash-2'></i></button> </td>" +
+        "</tr>"
+      );
+    });
+
 });
 function SetSummary(){
   var summary = $(".summary");

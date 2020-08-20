@@ -116,7 +116,7 @@ z-index: 1151 !important;
                               @foreach ($jobs as $job)
                               <tr>
                                   <td>{{ date('d-m-Y', strtotime($job->bookingdate)) }}</td>
-                                  <td>{{ date('H-i A', strtotime($job->bookingdate)) }}</td>
+                                  <td>{{ date('H:i A', strtotime($job->bookingdate)) }}</td>
                                   @foreach($job->users as $user)
                                     @if($user->profile_id === '7')
                                       <td>{{ $user->name }} {{ $user->lastname }}</td>

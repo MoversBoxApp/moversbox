@@ -55,13 +55,13 @@ class JobsTableSeeder extends Seeder
         Contact::create([
           'name' => $names[14-$i],
           'lastname' => $lastnames[$i],
-          'phone' => '604-000-000'.$i,
+          'phone' => '60400000'.$i,
           'job_id' => $i+1
         ]);
         Contact::create([
           'name' => $names[$i],
           'lastname' => $lastnames[$i],
-          'phone' => '604-000-001'.$i,
+          'phone' => '60400001'.$i,
           'job_id' => $i+1
         ]);
         /*JobsUsers*/
