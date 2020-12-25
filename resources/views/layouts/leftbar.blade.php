@@ -48,7 +48,7 @@
                           <li><a href="{{url('/admin-accounts')}}"><img src="../../assets/images/svg-icon/customers.svg" class="img-fluid" alt="accounts">Accounts</a></li>
                           <li><a href="{{url('/admin-quotes')}}"><img src="../../assets/images/svg-icon/pages.svg" class="img-fluid" alt="quotes">Quotes</a></li>
                           <li><a href="{{url('/admin-jobs')}}"><img src="../../assets/images/svg-icon/truck-mid-white.png" class="img-fluid" alt="jobs">Moves</a></li>
-                          <li><a href="{{url('/admin-invoices')}}"><img src="../../assets/images/svg-icon/forms.svg" class="img-fluid" alt="invoices">Invoices</a></li>
+                          <li><a href="{{url('/admin-invoices')}}"><img src="../../assets/images/svg-icon/forms.svg" class="img-fluid" alt="invoices">Invoices test</a></li>
                           <li><a href="{{url('/admin-cases')}}"><img src="../../assets/images/svg-icon/icons.svg" class="img-fluid" alt="cases">Cases</a></li>
                           <li><a href="{{url('/admin-reports')}}"><img src="../../assets/images/svg-icon/reports.svg" class="img-fluid" alt="dashboard">Reports<i class="feather icon-chevron-right"></i></a>
                               <ul class="vertical-submenu">
